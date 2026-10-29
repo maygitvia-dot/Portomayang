@@ -3,7 +3,9 @@ import { ProjectData } from '../../types/portfolio';
 import { CodeViewer } from '../ui/CodeViewer';
 import {
   CheckCircle2,
-  Sliders
+  Sliders,
+  Image as ImageIcon,
+  ZoomIn
 } from 'lucide-react';
 
 interface TranslationCaseStudyProps {
@@ -15,6 +17,7 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
   project,
 }) => {
   const [activeNodeIndex, setActiveNodeIndex] = useState<number>(4); // Default to AI Agent node
+  const [activeImageModal, setActiveImageModal] = useState<string | null>(null);
 
   const nodes = project.implementation.workflowNodes || [];
   const selectedNode = nodes[activeNodeIndex] || nodes[0];
@@ -26,7 +29,7 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
         <div className="flex items-center gap-2 font-mono text-xs text-electric-blue uppercase tracking-widest">
           <span>01</span>
           <span className="w-4 h-[1px] bg-electric-blue" />
-          <span>The Problem & Objectives</span>
+          <span>The Problem & Input Documents</span>
         </div>
         <h3 className="text-2xl sm:text-3xl font-serif text-frost font-light">
           Manual technical translation between cloud repositories is repetitive, disjointed, and time-intensive.
@@ -52,30 +55,33 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
           </div>
         </div>
 
-        {/* Test Result Verification Card */}
-        <div className="p-4 sm:p-5 rounded-xl border border-electric-blue/30 bg-electric-blue/5 font-mono text-xs">
-          <div className="text-electric-blue font-semibold uppercase tracking-wider mb-2 flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-arctic-cyan" />
-            <span>Documented Verification Proof</span>
+        {/* 📷 Real Screenshot 1: Input Documents in Google Drive */}
+        <div className="p-4 sm:p-6 rounded-2xl border border-steel-midnight bg-obsidian-dark space-y-3">
+          <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
+            <span className="text-electric-blue uppercase tracking-wider flex items-center gap-1.5 font-semibold">
+              <ImageIcon className="w-4 h-4" />
+              Input Documents Repository (Google Drive: Dokumen_Masuk)
+            </span>
+            <span className="text-[11px] text-silver-muted hidden sm:inline">Figure 1.0</span>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-silver-ice font-sans pt-1">
-            <div>
-              <span className="block text-frost font-mono text-base font-medium">3 PDFs</span>
-              <span className="text-silver-muted text-xs">Input English Documents</span>
-            </div>
-            <div>
-              <span className="block text-frost font-mono text-base font-medium">3 Google Docs</span>
-              <span className="text-silver-muted text-xs">Generated Indonesian Output</span>
-            </div>
-            <div>
-              <span className="block text-frost font-mono text-base font-medium">100% Autonomous</span>
-              <span className="text-silver-muted text-xs">Zero Manual Steps</span>
-            </div>
-            <div>
-              <span className="block text-frost font-mono text-base font-medium">7 Stages</span>
-              <span className="text-silver-muted text-xs">Connected n8n DAG</span>
+
+          <div
+            onClick={() => setActiveImageModal('/projects/translation/translation-input-docs.jpg')}
+            className="group relative rounded-xl overflow-hidden border border-steel-midnight bg-[#080d18] cursor-pointer"
+          >
+            <img
+              src="/projects/translation/translation-input-docs.jpg"
+              alt="Google Drive Input Documents"
+              className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-obsidian/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-xs font-mono text-white">
+              <ZoomIn className="w-4 h-4 text-electric-blue" />
+              <span>Click to view high-resolution</span>
             </div>
           </div>
+          <p className="text-[11px] font-sans text-silver-muted leading-relaxed">
+            Target PDF documents monitored in Google Drive directory: <code className="text-frost">The Charming Crystal Ball.pdf</code>, <code className="text-frost">The Colour of Love.pdf</code>, and <code className="text-frost">Ten Hours.pdf</code>.
+          </p>
         </div>
       </section>
 
@@ -124,8 +130,37 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
           The pipeline operates sequentially as a Directed Acyclic Graph (DAG) in n8n, handling scheduled trigger queries, binary downloads, text parsing, context-preserving translation, and destination doc formatting.
         </p>
 
+        {/* 📷 Real Screenshot 2: Full n8n Workflow Canvas */}
+        <div className="p-4 sm:p-6 rounded-2xl border border-steel-midnight bg-obsidian-dark space-y-3">
+          <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
+            <span className="text-laser-violet uppercase tracking-wider flex items-center gap-1.5 font-semibold">
+              <ImageIcon className="w-4 h-4" />
+              Complete n8n Workflow DAG Architecture
+            </span>
+            <span className="text-[11px] text-silver-muted hidden sm:inline">Figure 2.0</span>
+          </div>
+
+          <div
+            onClick={() => setActiveImageModal('/projects/translation/translation-workflow.jpg')}
+            className="group relative rounded-xl overflow-hidden border border-steel-midnight bg-[#080d18] cursor-pointer"
+          >
+            <img
+              src="/projects/translation/translation-workflow.jpg"
+              alt="n8n Workflow Editor Diagram"
+              className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-obsidian/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-xs font-mono text-white">
+              <ZoomIn className="w-4 h-4 text-laser-violet" />
+              <span>Click to view high-resolution</span>
+            </div>
+          </div>
+          <p className="text-[11px] font-sans text-silver-muted leading-relaxed">
+            The full 7-node orchestration: Schedule Trigger → Search files and folders → Download file → Extract from File (PDF) → AI Agent (Google Gemini Chat Model) → Create a document1 → Update a document.
+          </p>
+        </div>
+
         {/* Interactive n8n Node Map */}
-        <div className="p-6 rounded-xl border border-steel-midnight bg-obsidian-dark space-y-6">
+        <div className="p-6 rounded-xl border border-steel-midnight bg-obsidian-dark space-y-6 mt-6">
           <div className="flex items-center justify-between text-xs font-mono text-silver-muted uppercase tracking-wider">
             <span>Interactive Workflow Node Inspector</span>
             <span className="text-electric-blue">Click any node to inspect configuration</span>
@@ -192,7 +227,7 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
 
         {/* Prompt Engineering Code Viewer */}
         {project.implementation.codeSnippet && (
-          <div className="space-y-2">
+          <div className="space-y-2 pt-4">
             <div className="text-xs font-mono text-silver-muted uppercase tracking-wider">
               Gemini System Instruction & Translation Rules
             </div>
@@ -210,44 +245,72 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
         <div className="flex items-center gap-2 font-mono text-xs text-electric-blue uppercase tracking-widest">
           <span>04</span>
           <span className="w-4 h-[1px] bg-electric-blue" />
-          <span>Results & Evaluation</span>
+          <span>Results & Execution Verification</span>
         </div>
         <h3 className="text-2xl sm:text-3xl font-serif text-frost font-light">
           Automated Ingestion to Formatted Indonesian Output
         </h3>
 
-        {/* 3 Test Runs Detail Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 rounded-xl border border-steel-midnight bg-obsidian-dark font-mono text-xs space-y-2">
-            <div className="text-electric-blue font-semibold uppercase">Document Test Run #1</div>
-            <div className="text-frost font-sans font-medium">Technical Specification PDF</div>
-            <p className="text-silver-muted font-sans text-xs">
-              Successfully extracted multi-column text; translated to Bahasa Indonesia maintaining technical nomenclature.
-            </p>
-            <div className="text-arctic-cyan text-[11px] pt-1">Status: Google Doc Generated</div>
+        {/* 📷 Real Screenshot 3: AI Translation Execution Log & Output */}
+        <div className="p-4 sm:p-6 rounded-2xl border border-steel-midnight bg-obsidian-dark space-y-3">
+          <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
+            <span className="text-arctic-cyan uppercase tracking-wider flex items-center gap-1.5 font-semibold">
+              <ImageIcon className="w-4 h-4" />
+              Live n8n Execution Log & Gemini AI Output
+            </span>
+            <span className="text-[11px] text-silver-muted hidden sm:inline">Execution Record</span>
           </div>
 
-          <div className="p-4 rounded-xl border border-steel-midnight bg-obsidian-dark font-mono text-xs space-y-2">
-            <div className="text-laser-violet font-semibold uppercase">Document Test Run #2</div>
-            <div className="text-frost font-sans font-medium">Academic Research Excerpt</div>
-            <p className="text-silver-muted font-sans text-xs">
-              Extracted formal academic prose; translated preserving citation flow and section heading structure.
-            </p>
-            <div className="text-arctic-cyan text-[11px] pt-1">Status: Google Doc Generated</div>
+          <div
+            onClick={() => setActiveImageModal('/projects/translation/translation-execution.jpg')}
+            className="group relative rounded-xl overflow-hidden border border-steel-midnight bg-[#080d18] cursor-pointer"
+          >
+            <img
+              src="/projects/translation/translation-execution.jpg"
+              alt="n8n Execution Log and Gemini Output"
+              className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-obsidian/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-xs font-mono text-white">
+              <ZoomIn className="w-4 h-4 text-arctic-cyan" />
+              <span>Click to view high-resolution</span>
+            </div>
+          </div>
+          <p className="text-[11px] font-sans text-silver-muted leading-relaxed">
+            Execution logs verify end-to-end completion in 30.601s (AI Agent node: 18.04s, 4,966 tokens consumed) with natural, professional Indonesian output stream.
+          </p>
+        </div>
+
+        {/* 📷 Real Screenshot 4: Output Documents in Google Drive */}
+        <div className="p-4 sm:p-6 rounded-2xl border border-steel-midnight bg-obsidian-dark space-y-3 mt-6">
+          <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
+            <span className="text-electric-blue uppercase tracking-wider flex items-center gap-1.5 font-semibold">
+              <ImageIcon className="w-4 h-4" />
+              Generated Output Documents (Google Drive: Dokumen_Hasil_Terjemahan)
+            </span>
+            <span className="text-[11px] text-silver-muted hidden sm:inline">Destination Output</span>
           </div>
 
-          <div className="p-4 rounded-xl border border-steel-midnight bg-obsidian-dark font-mono text-xs space-y-2">
-            <div className="text-arctic-cyan font-semibold uppercase">Document Test Run #3</div>
-            <div className="text-frost font-sans font-medium">Software User Manual Guide</div>
-            <p className="text-silver-muted font-sans text-xs">
-              Extracted bulleted procedure guidelines; formatted output into clean readable Indonesian numbered lists.
-            </p>
-            <div className="text-arctic-cyan text-[11px] pt-1">Status: Google Doc Generated</div>
+          <div
+            onClick={() => setActiveImageModal('/projects/translation/translation-output-docs.jpg')}
+            className="group relative rounded-xl overflow-hidden border border-steel-midnight bg-[#080d18] cursor-pointer"
+          >
+            <img
+              src="/projects/translation/translation-output-docs.jpg"
+              alt="Google Drive Output Documents"
+              className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-obsidian/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-xs font-mono text-white">
+              <ZoomIn className="w-4 h-4 text-electric-blue" />
+              <span>Click to view high-resolution</span>
+            </div>
           </div>
+          <p className="text-[11px] font-sans text-silver-muted leading-relaxed">
+            Target destination directory verified with 3 newly created Google Docs: <code className="text-frost">Terjemahan_Ten Hours</code>, <code className="text-frost">Terjemahan_The Colour of Love</code>, and <code className="text-frost">Terjemahan_The Charming Crystal Ball</code>.
+          </p>
         </div>
 
         {/* Honest Limitations */}
-        <div className="p-5 rounded-xl border border-steel-midnight bg-navy-surface/30 space-y-3">
+        <div className="p-5 rounded-xl border border-steel-midnight bg-navy-surface/30 space-y-3 mt-6">
           <div className="text-xs font-mono text-icy-lilac uppercase tracking-wider flex items-center gap-2">
             <Sliders className="w-3.5 h-3.5" />
             <span>Operational Constraints & Lessons Learned</span>
@@ -291,6 +354,26 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
           ))}
         </div>
       </section>
+
+      {/* High-Resolution Fullscreen Image Viewer Modal */}
+      {activeImageModal && (
+        <div
+          role="dialog"
+          onClick={() => setActiveImageModal(null)}
+          className="fixed inset-0 z-50 bg-obsidian-dark/95 backdrop-blur-xl p-4 sm:p-8 flex items-center justify-center cursor-zoom-out animate-fadeIn"
+        >
+          <div className="relative max-w-5xl max-h-[90vh] rounded-2xl overflow-hidden border border-steel-midnight bg-obsidian p-2 shadow-2xl">
+            <img
+              src={activeImageModal}
+              alt="n8n Translation Diagram High Resolution"
+              className="w-full h-full object-contain max-h-[85vh] rounded-xl"
+            />
+            <div className="absolute top-4 right-4 bg-obsidian/80 px-3 py-1 rounded-full text-xs font-mono text-silver-ice border border-steel-midnight">
+              Click anywhere to close
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

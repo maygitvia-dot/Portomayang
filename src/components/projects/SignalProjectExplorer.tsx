@@ -78,47 +78,25 @@ export const SignalProjectExplorer: React.FC<SignalProjectExplorerProps> = ({
                         </div>
                       </div>
                     ) : (
-                      /* AI Document Translation Visual Banner with n8n DAG flow */
-                      <div className="w-full h-full relative flex items-center justify-center p-6 bg-gradient-to-tr from-obsidian-dark via-navy-surface to-obsidian">
-                        {/* Background grid */}
-                        <div className="absolute inset-0 bg-[radial-gradient(#1B2948_1px,transparent_1px)] [background-size:16px_16px] opacity-40" />
-
-                        {/* Visual DAG Flow Diagram Simulation */}
-                        <div className="relative z-10 w-full max-w-sm rounded-xl border border-steel-midnight/90 bg-obsidian/90 p-4 shadow-2xl">
-                          <div className="flex items-center justify-between border-b border-steel-midnight pb-2 mb-3 text-[10px] font-mono text-silver-muted">
-                            <span className="text-laser-violet flex items-center gap-1">
-                              <span className="w-1.5 h-1.5 rounded-full bg-laser-violet animate-pulse" />
-                              N8N WORKFLOW DAG
-                            </span>
-                            <span className="text-arctic-cyan">GEMINI 1.5</span>
-                          </div>
-
-                          {/* 4 Connected Nodes Preview */}
-                          <div className="grid grid-cols-4 gap-2 text-center text-[9px] font-mono">
-                            <div className="p-2 rounded bg-navy-surface border border-steel-midnight text-silver-ice">
-                              Drive
-                            </div>
-                            <div className="p-2 rounded bg-navy-surface border border-steel-midnight text-silver-ice">
-                              Extract
-                            </div>
-                            <div className="p-2 rounded bg-laser-violet/20 border border-laser-violet/50 text-frost font-bold">
-                              Gemini
-                            </div>
-                            <div className="p-2 rounded bg-electric-blue/20 border border-electric-blue/50 text-frost font-bold">
-                              Docs
-                            </div>
-                          </div>
-
-                          <div className="mt-3 flex items-center justify-between text-[10px] font-mono text-silver-muted">
-                            <span>EN PDF → ID DOCS</span>
-                            <span className="text-electric-blue">100% AUTOMATED</span>
-                          </div>
-                        </div>
+                      /* Real AI Document Translation Workflow Banner */
+                      <div className="w-full h-full relative overflow-hidden bg-[#0c1220] flex items-center justify-center">
+                        <img
+                          src="/projects/translation/translation-workflow.jpg"
+                          alt="AI Document Translation Automation Workflow n8n"
+                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 filter brightness-95 contrast-105"
+                        />
+                        {/* Subtle dark gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-obsidian-dark/80 via-transparent to-transparent pointer-events-none" />
 
                         {/* Top corner label */}
                         <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-obsidian/85 backdrop-blur-md border border-steel-midnight text-[10px] font-mono text-silver-ice shadow-lg flex items-center gap-1.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-laser-violet animate-pulse" />
                           <span>Workflow Automation</span>
+                        </div>
+
+                        {/* Bottom Metric Tag */}
+                        <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-obsidian/90 backdrop-blur-md border border-laser-violet/40 text-[10px] font-mono text-arctic-cyan shadow-lg">
+                          100% AUTONOMOUS
                         </div>
                       </div>
                     )}
