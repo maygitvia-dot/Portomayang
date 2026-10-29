@@ -56,37 +56,25 @@ export const SignalProjectExplorer: React.FC<SignalProjectExplorerProps> = ({
                   <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-obsidian-dark border border-steel-midnight/80 mb-6 group-hover:border-electric-blue/40 transition-colors">
                     {/* Visual Preview Banner */}
                     {isScovis ? (
-                      /* SCOVIS Image / Banner Simulation with real-time waveform / neural lines */
-                      <div className="w-full h-full relative flex items-center justify-center p-6 bg-gradient-to-tr from-obsidian-dark via-navy-deep to-obsidian">
-                        {/* Background grid */}
-                        <div className="absolute inset-0 bg-[radial-gradient(#1B2948_1px,transparent_1px)] [background-size:16px_16px] opacity-40" />
-
-                        {/* Visual Handwriting Scan & Analytics overlay */}
-                        <div className="relative z-10 w-full max-w-sm rounded-xl border border-steel-midnight/90 bg-obsidian/90 p-4 shadow-2xl">
-                          <div className="flex items-center justify-between border-b border-steel-midnight pb-2 mb-3 text-[10px] font-mono text-silver-muted">
-                            <span className="text-electric-blue flex items-center gap-1">
-                              <span className="w-1.5 h-1.5 rounded-full bg-electric-blue animate-pulse" />
-                              SCOVIS // DEEP LEARNING
-                            </span>
-                            <span>VAL ACC: 55.45%</span>
-                          </div>
-
-                          {/* Handwriting stroke preview */}
-                          <div className="h-14 rounded bg-[#070b14] border border-steel-midnight/60 p-2 flex flex-col justify-around">
-                            <div className="h-1.5 w-3/4 rounded-full bg-gradient-to-r from-arctic-cyan/80 to-transparent" />
-                            <div className="h-1.5 w-5/6 rounded-full bg-gradient-to-r from-electric-blue/70 to-transparent" />
-                            <div className="h-1.5 w-1/2 rounded-full bg-gradient-to-r from-laser-violet/60 to-transparent" />
-                          </div>
-
-                          <div className="mt-2.5 flex items-center justify-between text-[10px] font-mono text-silver-muted">
-                            <span>MobileNetV2 + BiLSTM</span>
-                            <span className="text-arctic-cyan">1,560 SAMPLES</span>
-                          </div>
-                        </div>
+                      /* Real SCOVIS Technical Architecture / Pipeline Banner */
+                      <div className="w-full h-full relative overflow-hidden bg-[#0c1220] flex items-center justify-center">
+                        <img
+                          src="/projects/scovis/scovis-pipeline.jpg"
+                          alt="SCOVIS Deep Learning Pipeline"
+                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 filter brightness-95 contrast-105"
+                        />
+                        {/* Subtle dark gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-obsidian-dark/80 via-transparent to-transparent pointer-events-none" />
 
                         {/* Top corner label */}
-                        <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-obsidian/80 border border-steel-midnight text-[10px] font-mono text-silver-ice">
-                          Image-Based Assessment
+                        <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-obsidian/85 backdrop-blur-md border border-steel-midnight text-[10px] font-mono text-silver-ice shadow-lg flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-electric-blue animate-pulse" />
+                          <span>Image-Based Assessment</span>
+                        </div>
+
+                        {/* Bottom Metric Tag */}
+                        <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-obsidian/90 backdrop-blur-md border border-electric-blue/40 text-[10px] font-mono text-arctic-cyan shadow-lg">
+                          VAL ACC: 55.45%
                         </div>
                       </div>
                     ) : (
@@ -128,14 +116,15 @@ export const SignalProjectExplorer: React.FC<SignalProjectExplorerProps> = ({
                         </div>
 
                         {/* Top corner label */}
-                        <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-obsidian/80 border border-steel-midnight text-[10px] font-mono text-silver-ice">
-                          Workflow Automation
+                        <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-obsidian/85 backdrop-blur-md border border-steel-midnight text-[10px] font-mono text-silver-ice shadow-lg flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-laser-violet animate-pulse" />
+                          <span>Workflow Automation</span>
                         </div>
                       </div>
                     )}
 
                     {/* Hover Glow Sheen */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/80 via-transparent to-transparent opacity-40 group-hover:opacity-10 transition-opacity" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/80 via-transparent to-transparent opacity-40 group-hover:opacity-10 transition-opacity pointer-events-none" />
                   </div>
 
                   {/* Category & Stack Tag Pills matching reference */}

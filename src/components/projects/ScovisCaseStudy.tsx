@@ -5,7 +5,8 @@ import {
   AlertCircle,
   CheckCircle2,
   Image as ImageIcon,
-  Sliders
+  Sliders,
+  ZoomIn
 } from 'lucide-react';
 
 interface ScovisCaseStudyProps {
@@ -16,7 +17,7 @@ interface ScovisCaseStudyProps {
 export const ScovisCaseStudy: React.FC<ScovisCaseStudyProps> = ({
   project,
 }) => {
-  const [imageFilterMode, setImageFilterMode] = useState<'raw' | 'preprocessed'>('preprocessed');
+  const [activeImageModal, setActiveImageModal] = useState<string | null>(null);
 
   return (
     <div className="space-y-16 py-8">
@@ -34,7 +35,7 @@ export const ScovisCaseStudy: React.FC<ScovisCaseStudyProps> = ({
           {project.problem.statement}
         </p>
 
-        {/* Key Challenges Badges matching Frame 05 */}
+        {/* Key Challenges Badges */}
         <div className="pt-2">
           <div className="text-xs font-mono text-silver-muted uppercase tracking-wider mb-3">
             Key Challenges Addressed
@@ -67,13 +68,42 @@ export const ScovisCaseStudy: React.FC<ScovisCaseStudyProps> = ({
             </div>
             <div>
               <span className="block text-frost font-mono text-base font-medium">4 Exam Questions</span>
-              <span className="text-silver-muted text-xs">Sections a–f</span>
+              <span className="text-silver-muted text-xs">Sections a–f (24 Sections)</span>
             </div>
             <div>
               <span className="block text-frost font-mono text-base font-medium">Steganography</span>
-              <span className="text-silver-muted text-xs">University Course Exam</span>
+              <span className="text-silver-muted text-xs">Course Examination</span>
             </div>
           </div>
+        </div>
+
+        {/* 📷 Real Diagram: Dataset & Preprocessing Pipeline */}
+        <div className="p-4 sm:p-6 rounded-2xl border border-steel-midnight bg-obsidian-dark space-y-3">
+          <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
+            <span className="text-electric-blue uppercase tracking-wider flex items-center gap-1.5 font-semibold">
+              <ImageIcon className="w-4 h-4" />
+              Dataset Structure & Handwriting Preprocessing Sample
+            </span>
+            <span className="text-[11px] text-silver-muted hidden sm:inline">Figure 1.0</span>
+          </div>
+
+          <div
+            onClick={() => setActiveImageModal('/projects/scovis/scovis-dataset-preprocessing.jpg')}
+            className="group relative rounded-xl overflow-hidden border border-steel-midnight bg-[#080d18] cursor-pointer"
+          >
+            <img
+              src="/projects/scovis/scovis-dataset-preprocessing.jpg"
+              alt="SCOVIS Dataset Structure and Preprocessing"
+              className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-obsidian/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-xs font-mono text-white">
+              <ZoomIn className="w-4 h-4 text-electric-blue" />
+              <span>Click to view high-resolution</span>
+            </div>
+          </div>
+          <p className="text-[11px] font-sans text-silver-muted leading-relaxed">
+            Data acquisition across 24 exam sections (4 Questions × 6 Sections) resulting in 1,560 image records, evaluated with an 80:20 train/validation split. Bottom panel displays actual student handwriting crop before and after adaptive OpenCV filtering.
+          </p>
         </div>
       </section>
 
@@ -123,121 +153,67 @@ export const ScovisCaseStudy: React.FC<ScovisCaseStudyProps> = ({
           {project.technicalProcess.overview}
         </p>
 
-        {/* Interactive Visual Pipeline Diagram */}
-        <div className="p-5 sm:p-6 rounded-xl border border-steel-midnight bg-navy-deep/40 space-y-4">
-          <div className="text-xs font-mono text-silver-muted uppercase tracking-wider">
-            End-to-End Deep Learning Flow
+        {/* 📷 Real Diagram: End-to-End System Pipeline */}
+        <div className="p-4 sm:p-6 rounded-2xl border border-steel-midnight bg-obsidian-dark space-y-3">
+          <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
+            <span className="text-electric-blue uppercase tracking-wider flex items-center gap-1.5 font-semibold">
+              <ImageIcon className="w-4 h-4" />
+              End-to-End System Assessment Flow
+            </span>
+            <span className="text-[11px] text-silver-muted hidden sm:inline">Figure 2.0</span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
-            {project.technicalProcess.steps.map((st) => (
-              <div
-                key={st.step}
-                className="p-3.5 rounded-lg border border-steel-midnight bg-navy-surface/50 font-mono flex flex-col justify-between"
-              >
-                <div>
-                  <span className="text-electric-blue text-xs font-bold">{st.step}</span>
-                  <h4 className="text-frost text-xs font-semibold mt-1 font-sans">{st.title}</h4>
-                </div>
-                <p className="text-[11px] text-silver-muted font-sans mt-2 leading-relaxed">
-                  {st.description}
-                </p>
-              </div>
-            ))}
+
+          <div
+            onClick={() => setActiveImageModal('/projects/scovis/scovis-pipeline.jpg')}
+            className="group relative rounded-xl overflow-hidden border border-steel-midnight bg-[#080d18] cursor-pointer"
+          >
+            <img
+              src="/projects/scovis/scovis-pipeline.jpg"
+              alt="SCOVIS System Architecture Pipeline"
+              className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-obsidian/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-xs font-mono text-white">
+              <ZoomIn className="w-4 h-4 text-electric-blue" />
+              <span>Click to view high-resolution</span>
+            </div>
           </div>
+          <p className="text-[11px] font-sans text-silver-muted leading-relaxed">
+            Five-stage inference pipeline without intermediate OCR: Answer Image Input → 24 Section Preprocessing → CNN-BiLSTM Feature Extraction → AI Score Recommendation → Lecturer Final Human-in-the-Loop Review.
+          </p>
         </div>
 
-        {/* Interactive Image Preprocessing Demonstration Viewer */}
-        <div className="p-6 rounded-xl border border-steel-midnight bg-obsidian-dark space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <ImageIcon className="w-4 h-4 text-electric-blue" />
-              <span className="text-xs font-mono text-frost uppercase tracking-wider">
-                Interactive Preprocessing Pipeline Preview
-              </span>
-            </div>
-            <div className="flex items-center gap-2 font-mono text-xs">
-              <button
-                onClick={() => setImageFilterMode('raw')}
-                className={`px-3 py-1 rounded transition-colors ${
-                  imageFilterMode === 'raw'
-                    ? 'bg-electric-blue text-white'
-                    : 'bg-navy-surface text-silver-muted hover:text-frost'
-                }`}
-              >
-                Raw Handwriting Scan
-              </button>
-              <button
-                onClick={() => setImageFilterMode('preprocessed')}
-                className={`px-3 py-1 rounded transition-colors ${
-                  imageFilterMode === 'preprocessed'
-                    ? 'bg-laser-violet text-white'
-                    : 'bg-navy-surface text-silver-muted hover:text-frost'
-                }`}
-              >
-                OpenCV Filtered (Adaptive)
-              </button>
-            </div>
+        {/* 📷 Real Diagram: 10-Layer MobileNetV2 + BiLSTM Architecture */}
+        <div className="p-4 sm:p-6 rounded-2xl border border-steel-midnight bg-obsidian-dark space-y-3 mt-6">
+          <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
+            <span className="text-laser-violet uppercase tracking-wider flex items-center gap-1.5 font-semibold">
+              <ImageIcon className="w-4 h-4" />
+              10-Stage Neural Network Architecture (MobileNetV2 + BiLSTM)
+            </span>
+            <span className="text-[11px] text-silver-muted hidden sm:inline">Figure 3.0</span>
           </div>
 
-          <div className="relative h-44 sm:h-52 rounded-lg border border-steel-midnight bg-[#0e1322] flex items-center justify-center overflow-hidden">
-            {/* SVG Simulated Handwriting Sample */}
-            <svg
-              className={`w-full h-full max-w-lg transition-all duration-300 ${
-                imageFilterMode === 'preprocessed' ? 'filter contrast-150 invert-0' : 'opacity-85'
-              }`}
-              viewBox="0 0 500 180"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {/* Exam paper background grain */}
-              {imageFilterMode === 'raw' && (
-                <rect width="500" height="180" fill="#141c30" opacity="0.6" />
-              )}
-              {imageFilterMode === 'preprocessed' && (
-                <rect width="500" height="180" fill="#04060a" />
-              )}
-
-              {/* Exam Lines */}
-              <line x1="20" y1="50" x2="480" y2="50" stroke="#1f2c4a" strokeWidth="1" strokeDasharray="2 4" />
-              <line x1="20" y1="100" x2="480" y2="100" stroke="#1f2c4a" strokeWidth="1" strokeDasharray="2 4" />
-              <line x1="20" y1="150" x2="480" y2="150" stroke="#1f2c4a" strokeWidth="1" strokeDasharray="2 4" />
-
-              {/* Simulated Cursive Handwriting Strokes */}
-              <path
-                d="M 40 45 Q 60 20, 80 45 T 120 40 T 160 48 T 210 35 T 260 46 T 310 40 T 370 45 T 440 38"
-                stroke={imageFilterMode === 'raw' ? '#a0b2d6' : '#36DDF2'}
-                strokeWidth={imageFilterMode === 'preprocessed' ? '2.5' : '1.8'}
-                strokeLinecap="round"
-                fill="none"
-              />
-              <path
-                d="M 45 95 Q 75 75, 105 95 T 150 90 T 200 98 T 255 85 T 305 96 T 360 90 T 420 95"
-                stroke={imageFilterMode === 'raw' ? '#8a9ec2' : '#36DDF2'}
-                strokeWidth={imageFilterMode === 'preprocessed' ? '2.5' : '1.8'}
-                strokeLinecap="round"
-                fill="none"
-              />
-              <path
-                d="M 42 145 Q 80 125, 120 145 T 170 140 T 230 148 T 290 135 T 350 146 T 410 140"
-                stroke={imageFilterMode === 'raw' ? '#95a8cc' : '#36DDF2'}
-                strokeWidth={imageFilterMode === 'preprocessed' ? '2.5' : '1.8'}
-                strokeLinecap="round"
-                fill="none"
-              />
-
-              {/* Bounding box crop overlay */}
-              <rect x="25" y="15" width="450" height="150" stroke="#3568FF" strokeWidth="1" strokeDasharray="4 4" fill="none" opacity="0.5" />
-            </svg>
-
-            <div className="absolute bottom-2 right-3 font-mono text-[10px] text-silver-muted bg-obsidian/80 px-2 py-0.5 rounded">
-              {imageFilterMode === 'raw' ? 'Original Grayscale Scan' : 'Adaptive Gaussian Thresholding (224×224)'}
+          <div
+            onClick={() => setActiveImageModal('/projects/scovis/scovis-architecture.jpg')}
+            className="group relative rounded-xl overflow-hidden border border-steel-midnight bg-[#080d18] cursor-pointer"
+          >
+            <img
+              src="/projects/scovis/scovis-architecture.jpg"
+              alt="MobileNetV2 and BiLSTM Layer Diagram"
+              className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-obsidian/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-xs font-mono text-white">
+              <ZoomIn className="w-4 h-4 text-laser-violet" />
+              <span>Click to view high-resolution</span>
             </div>
           </div>
+          <p className="text-[11px] font-sans text-silver-muted leading-relaxed">
+            Detailed network flow: Input (224×224×3) → Pretrained MobileNetV2 backbone (7×7×1280) → 1×1 Conv2D Bottleneck (7×7×256) → Spatial Reshape (49×256) → 2-layer BiLSTM sequence extractor (128 units/dir) with Dropouts → Dense 128 (L2 reg = 10⁻⁴) → Softmax Classification.
+          </p>
         </div>
 
         {/* Python Inference Code Snippet */}
         {project.implementation.codeSnippet && (
-          <div className="space-y-2">
+          <div className="space-y-2 pt-4">
             <div className="text-xs font-mono text-silver-muted uppercase tracking-wider">
               Documented Inference Implementation
             </div>
@@ -272,89 +248,63 @@ export const ScovisCaseStudy: React.FC<ScovisCaseStudyProps> = ({
           </div>
         </div>
 
-        {/* Comparative Architecture Bar Chart / Table */}
-        {project.results.comparisons && (
-          <div className="p-6 rounded-xl border border-steel-midnight bg-obsidian-dark space-y-5">
-            <div className="text-xs font-mono text-silver-muted uppercase tracking-wider flex items-center justify-between">
-              <span>Model Comparison Table (Validation Set)</span>
-              <span className="text-electric-blue">3 Evaluated Backbones</span>
-            </div>
+        {/* 📷 Real Chart 1: Mean Validation Performance Across 24 Sections */}
+        <div className="p-4 sm:p-6 rounded-2xl border border-steel-midnight bg-obsidian-dark space-y-3">
+          <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
+            <span className="text-arctic-cyan uppercase tracking-wider flex items-center gap-1.5 font-semibold">
+              <ImageIcon className="w-4 h-4" />
+              Mean Validation Performance Across 24 Sections (Fixed 80:20 Split)
+            </span>
+            <span className="text-[11px] text-silver-muted hidden sm:inline">Benchmark Chart</span>
+          </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left font-mono text-xs border-collapse">
-                <thead>
-                  <tr className="border-b border-steel-midnight text-silver-muted">
-                    <th className="py-2.5 px-3">Architecture + Sequence</th>
-                    <th className="py-2.5 px-3">Mean Val Accuracy</th>
-                    <th className="py-2.5 px-3">Macro F1-Score</th>
-                    <th className="py-2.5 px-3">Weighted F1-Score</th>
-                    <th className="py-2.5 px-3 text-right">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-steel-midnight/50">
-                  {project.results.comparisons.map((row, idx) => (
-                    <tr
-                      key={idx}
-                      className={
-                        row.isMainModel
-                          ? 'bg-electric-blue/10 text-frost font-semibold'
-                          : 'text-silver-ice hover:bg-navy-surface/30'
-                      }
-                    >
-                      <td className="py-3 px-3 flex items-center gap-2">
-                        {row.isMainModel && <span className="w-2 h-2 rounded-full bg-electric-blue" />}
-                        <span>{row.name}</span>
-                      </td>
-                      <td className="py-3 px-3 font-semibold text-frost">
-                        {row.valAccuracy.toFixed(2)}%
-                      </td>
-                      <td className="py-3 px-3 text-silver-ice">
-                        {row.macroF1.toFixed(4)}
-                      </td>
-                      <td className="py-3 px-3 text-silver-ice">
-                        {row.weightedF1.toFixed(4)}
-                      </td>
-                      <td className="py-3 px-3 text-right">
-                        {row.isMainModel ? (
-                          <span className="px-2 py-0.5 rounded bg-electric-blue/20 text-electric-blue border border-electric-blue/30 text-[10px]">
-                            MY MODEL
-                          </span>
-                        ) : (
-                          <span className="text-silver-muted text-[10px]">COMPARISON</span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Visual Comparative Bars */}
-            <div className="space-y-3 pt-2">
-              <div className="text-[11px] font-mono text-silver-muted">
-                Validation Accuracy Visual Comparison
-              </div>
-              {project.results.comparisons.map((row, idx) => (
-                <div key={idx} className="space-y-1">
-                  <div className="flex justify-between text-xs font-mono text-silver-ice">
-                    <span>{row.name}</span>
-                    <span className="font-semibold text-frost">{row.valAccuracy}%</span>
-                  </div>
-                  <div className="h-2 w-full rounded-full bg-navy-deep overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-700 ${
-                        row.isMainModel
-                          ? 'bg-gradient-to-r from-electric-blue to-arctic-cyan'
-                          : 'bg-steel-midnight'
-                      }`}
-                      style={{ width: `${row.valAccuracy}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
+          <div
+            onClick={() => setActiveImageModal('/projects/scovis/scovis-validation-performance.jpg')}
+            className="group relative rounded-xl overflow-hidden border border-steel-midnight bg-[#080d18] cursor-pointer"
+          >
+            <img
+              src="/projects/scovis/scovis-validation-performance.jpg"
+              alt="Validation Performance Across Architectures"
+              className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-obsidian/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-xs font-mono text-white">
+              <ZoomIn className="w-4 h-4 text-arctic-cyan" />
+              <span>Click to view high-resolution</span>
             </div>
           </div>
-        )}
+          <p className="text-[11px] font-sans text-silver-muted leading-relaxed">
+            Validation metrics across backbones: MobileNetV2-BiLSTM achieved the highest Mean Validation Accuracy (55.45%) and highest Weighted F1 (0.5191), while InceptionV3-BiLSTM achieved the highest Macro F1 (0.3369).
+          </p>
+        </div>
+
+        {/* 📷 Real Chart 2: Train/Test Ratio Accuracy Benchmark */}
+        <div className="p-4 sm:p-6 rounded-2xl border border-steel-midnight bg-obsidian-dark space-y-3">
+          <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
+            <span className="text-electric-blue uppercase tracking-wider flex items-center gap-1.5 font-semibold">
+              <ImageIcon className="w-4 h-4" />
+              Validation Accuracy for Different Dataset Split Ratios
+            </span>
+            <span className="text-[11px] text-silver-muted hidden sm:inline">Ratio Benchmark</span>
+          </div>
+
+          <div
+            onClick={() => setActiveImageModal('/projects/scovis/scovis-ratio-benchmark.jpg')}
+            className="group relative rounded-xl overflow-hidden border border-steel-midnight bg-[#080d18] cursor-pointer"
+          >
+            <img
+              src="/projects/scovis/scovis-ratio-benchmark.jpg"
+              alt="Validation Accuracy across Ratios"
+              className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-obsidian/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-xs font-mono text-white">
+              <ZoomIn className="w-4 h-4 text-electric-blue" />
+              <span>Click to view high-resolution</span>
+            </div>
+          </div>
+          <p className="text-[11px] font-sans text-silver-muted leading-relaxed">
+            Empirical benchmark testing split ratios from 90:10 (57.14%) down to 10:90 (39.84%). The 80:20 split provided the most robust statistical balance (55.45%) for section-specific models.
+          </p>
+        </div>
 
         {/* Honest Limitations Section */}
         <div className="p-5 rounded-xl border border-steel-midnight bg-navy-surface/30 space-y-3">
@@ -401,6 +351,26 @@ export const ScovisCaseStudy: React.FC<ScovisCaseStudyProps> = ({
           ))}
         </div>
       </section>
+
+      {/* High-Resolution Fullscreen Image Viewer Modal */}
+      {activeImageModal && (
+        <div
+          role="dialog"
+          onClick={() => setActiveImageModal(null)}
+          className="fixed inset-0 z-50 bg-obsidian-dark/95 backdrop-blur-xl p-4 sm:p-8 flex items-center justify-center cursor-zoom-out animate-fadeIn"
+        >
+          <div className="relative max-w-5xl max-h-[90vh] rounded-2xl overflow-hidden border border-steel-midnight bg-obsidian p-2 shadow-2xl">
+            <img
+              src={activeImageModal}
+              alt="SCOVIS Diagram High Resolution"
+              className="w-full h-full object-contain max-h-[85vh] rounded-xl"
+            />
+            <div className="absolute top-4 right-4 bg-obsidian/80 px-3 py-1 rounded-full text-xs font-mono text-silver-ice border border-steel-midnight">
+              Click anywhere to close
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
