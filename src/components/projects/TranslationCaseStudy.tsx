@@ -22,8 +22,84 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
   const nodes = project.implementation.workflowNodes || [];
   const selectedNode = nodes[activeNodeIndex] || nodes[0];
 
+  const workflowGallery = [
+    {
+      step: '01',
+      title: 'Workflow Architecture',
+      subtitle: 'Complete n8n DAG Pipeline',
+      image: '/projects/translation/translation-workflow.jpg',
+    },
+    {
+      step: '02',
+      title: 'Input Documents',
+      subtitle: 'Google Drive: Dokumen_Masuk',
+      image: '/projects/translation/translation-input-docs.jpg',
+    },
+    {
+      step: '03',
+      title: 'AI Translation Execution',
+      subtitle: 'Gemini AI Telemetry & Logs',
+      image: '/projects/translation/translation-execution.jpg',
+    },
+    {
+      step: '04',
+      title: 'Automated Output',
+      subtitle: 'Google Docs: Dokumen_Hasil',
+      image: '/projects/translation/translation-output-docs.jpg',
+    },
+  ];
+
   return (
     <div className="space-y-16 py-8">
+      {/* 4-Stage Visual Telemetry Navigation Bar */}
+      <div className="p-5 sm:p-6 rounded-2xl border border-steel-midnight bg-navy-surface/30 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-steel-midnight/50 pb-3">
+          <div>
+            <span className="text-[10px] font-mono uppercase tracking-widest text-laser-violet">
+              System Pipeline Visuals
+            </span>
+            <h4 className="text-sm sm:text-base font-serif text-frost font-medium">
+              4-Stage End-to-End Workflow Showcase
+            </h4>
+          </div>
+          <span className="text-[11px] font-mono text-silver-muted">
+            Click any frame to inspect full-resolution
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {workflowGallery.map((item) => (
+            <div
+              key={item.step}
+              onClick={() => setActiveImageModal(item.image)}
+              className="group relative rounded-xl border border-steel-midnight/80 bg-obsidian-dark overflow-hidden cursor-pointer hover:border-electric-blue transition-all duration-300 flex flex-col justify-between"
+            >
+              <div className="relative aspect-[16/10] overflow-hidden bg-[#0a0f1d]">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90 group-hover:brightness-100"
+                />
+                <div className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded bg-obsidian/85 backdrop-blur-md text-[9px] font-mono text-arctic-cyan border border-steel-midnight">
+                  {item.step}
+                </div>
+                <div className="absolute inset-0 bg-obsidian/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <ZoomIn className="w-4 h-4 text-electric-blue" />
+                </div>
+              </div>
+              <div className="p-2.5">
+                <div className="text-xs font-sans font-medium text-frost group-hover:text-electric-blue transition-colors truncate">
+                  {item.title}
+                </div>
+                <div className="text-[10px] font-mono text-silver-muted truncate">
+                  {item.subtitle}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* 01. Problem & Key Objectives */}
       <section id="section-problem" className="scroll-mt-24 space-y-6">
         <div className="flex items-center gap-2 font-mono text-xs text-electric-blue uppercase tracking-widest">
@@ -55,14 +131,14 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
           </div>
         </div>
 
-        {/* 📷 Real Screenshot 1: Input Documents in Google Drive */}
+        {/* 📷 Real Screenshot 2: Input Documents in Google Drive */}
         <div className="p-4 sm:p-6 rounded-2xl border border-steel-midnight bg-obsidian-dark space-y-3">
           <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
             <span className="text-electric-blue uppercase tracking-wider flex items-center gap-1.5 font-semibold">
               <ImageIcon className="w-4 h-4" />
-              Input Documents Repository (Google Drive: Dokumen_Masuk)
+              2. Input Documents (Google Drive: Dokumen_Masuk)
             </span>
-            <span className="text-[11px] text-silver-muted hidden sm:inline">Figure 1.0</span>
+            <span className="text-[11px] text-silver-muted hidden sm:inline">Figure 2.0</span>
           </div>
 
           <div
@@ -135,9 +211,9 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
           <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
             <span className="text-laser-violet uppercase tracking-wider flex items-center gap-1.5 font-semibold">
               <ImageIcon className="w-4 h-4" />
-              Complete n8n Workflow DAG Architecture
+              1. AI Document Translation Automation Workflow
             </span>
-            <span className="text-[11px] text-silver-muted hidden sm:inline">Figure 2.0</span>
+            <span className="text-[11px] text-silver-muted hidden sm:inline">Figure 1.0</span>
           </div>
 
           <div
@@ -256,9 +332,9 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
           <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
             <span className="text-arctic-cyan uppercase tracking-wider flex items-center gap-1.5 font-semibold">
               <ImageIcon className="w-4 h-4" />
-              Live n8n Execution Log & Gemini AI Output
+              3. AI Translation Execution (Live Telemetry & Logs)
             </span>
-            <span className="text-[11px] text-silver-muted hidden sm:inline">Execution Record</span>
+            <span className="text-[11px] text-silver-muted hidden sm:inline">Figure 3.0</span>
           </div>
 
           <div
@@ -285,9 +361,9 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
           <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
             <span className="text-electric-blue uppercase tracking-wider flex items-center gap-1.5 font-semibold">
               <ImageIcon className="w-4 h-4" />
-              Generated Output Documents (Google Drive: Dokumen_Hasil_Terjemahan)
+              4. Automated Translation Output (Google Drive: Dokumen_Hasil_Terjemahan)
             </span>
-            <span className="text-[11px] text-silver-muted hidden sm:inline">Destination Output</span>
+            <span className="text-[11px] text-silver-muted hidden sm:inline">Figure 4.0</span>
           </div>
 
           <div
