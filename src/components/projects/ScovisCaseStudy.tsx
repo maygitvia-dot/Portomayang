@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ProjectData } from '../../types/portfolio';
 import { CodeViewer } from '../ui/CodeViewer';
+import { ScovisSimulator } from './ScovisSimulator';
+import { ScovisMLOps } from './ScovisMLOps';
 import {
   AlertCircle,
   CheckCircle2,
@@ -322,10 +324,36 @@ export const ScovisCaseStudy: React.FC<ScovisCaseStudyProps> = ({
         </div>
       </section>
 
-      {/* 05. Documentation and Resources */}
+      {/* 05-A. Interactive Pipeline Simulator */}
+      <section id="section-simulator" className="scroll-mt-24 space-y-6 pt-8 border-t border-steel-midnight/50">
+        <div className="flex items-center gap-2 font-mono text-xs text-laser-violet uppercase tracking-widest">
+          <span>05A</span>
+          <span className="w-4 h-[1px] bg-laser-violet" />
+          <span>Interactive Inference Simulator</span>
+        </div>
+        <h3 className="text-2xl sm:text-3xl font-serif text-frost font-light">
+          Try the Pipeline Yourself
+        </h3>
+        <ScovisSimulator />
+      </section>
+
+      {/* 05-B. Production MLOps Blueprint */}
+      <section id="section-mlops" className="scroll-mt-24 space-y-6 pt-8 border-t border-steel-midnight/50">
+        <div className="flex items-center gap-2 font-mono text-xs text-arctic-cyan uppercase tracking-widest">
+          <span>05B</span>
+          <span className="w-4 h-[1px] bg-arctic-cyan" />
+          <span>Production &amp; MLOps Blueprint</span>
+        </div>
+        <h3 className="text-2xl sm:text-3xl font-serif text-frost font-light">
+          From Research to Production API
+        </h3>
+        <ScovisMLOps />
+      </section>
+
+      {/* 06. Documentation and Resources */}
       <section id="section-resources" className="scroll-mt-24 space-y-6 pt-8 border-t border-steel-midnight/50">
         <div className="flex items-center gap-2 font-mono text-xs text-arctic-cyan uppercase tracking-widest">
-          <span>05</span>
+          <span>06</span>
           <span className="w-4 h-[1px] bg-arctic-cyan" />
           <span>Documentation & Artifacts</span>
         </div>

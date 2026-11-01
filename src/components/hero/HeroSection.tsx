@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowDownRight, Plus, User, Orbit } from 'lucide-react';
+import { ArrowDownRight, Download, Plus, User, Orbit } from 'lucide-react';
 import { PERSONAL_INFO } from '../../data/portfolioData';
 import { SignalArc } from './SignalArc';
 import { Profile3DCard } from '../ui/Profile3DCard';
@@ -37,9 +37,16 @@ export const HeroSection: React.FC = () => {
           className="lg:col-span-7 flex flex-col justify-center z-10"
         >
           {/* Role badge */}
-          <div className="inline-flex items-center gap-2.5 font-mono text-xs tracking-widest_editorial text-silver-ice uppercase mb-6 bg-navy-deep/60 border border-steel-midnight px-3.5 py-1.5 rounded-full w-fit backdrop-blur-sm">
-            <span className="w-2 h-2 rounded-full bg-arctic-cyan animate-pulse shadow-cyan-glow" />
-            <span>{PERSONAL_INFO.role}</span>
+          <div className="flex flex-wrap items-center gap-3 mb-6">
+            <div className="inline-flex items-center gap-2.5 font-mono text-xs tracking-widest_editorial text-silver-ice uppercase bg-navy-deep/60 border border-steel-midnight px-3.5 py-1.5 rounded-full w-fit backdrop-blur-sm">
+              <span className="w-2 h-2 rounded-full bg-arctic-cyan animate-pulse shadow-cyan-glow" />
+              <span>{PERSONAL_INFO.role}</span>
+            </div>
+            {/* Open to Work badge */}
+            <div className="inline-flex items-center gap-2 font-mono text-xs px-3 py-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 w-fit">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Open to Work · Jakarta / Hybrid / Remote
+            </div>
           </div>
 
           {/* Headline */}
@@ -61,23 +68,27 @@ export const HeroSection: React.FC = () => {
           </p>
 
           {/* Call to Actions */}
-          <div className="mt-10 flex flex-wrap items-center gap-5">
+          <div className="mt-10 flex flex-wrap items-center gap-4">
+            {/* Primary CTA: Download Resume */}
+            <a
+              href="/resume.pdf"
+              download
+              className="group relative inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-gradient-to-r from-electric-blue to-laser-violet text-white text-xs font-mono tracking-widest uppercase font-medium shadow-signal-glow hover:shadow-laser-glow transition-all duration-300"
+            >
+              <Download className="w-4 h-4" />
+              <span>Download Resume</span>
+            </a>
+
+            {/* Secondary CTA: Explore Projects */}
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => scrollTo('#projects')}
-              className="group relative inline-flex items-center gap-3 px-6 py-3.5 rounded-full bg-gradient-to-r from-electric-blue to-laser-violet text-white text-xs font-mono tracking-widest uppercase font-medium shadow-signal-glow hover:shadow-laser-glow transition-all duration-300"
+              className="group inline-flex items-center gap-2 px-5 py-3.5 rounded-full border border-steel-midnight bg-navy-surface/40 hover:bg-navy-surface text-silver-ice hover:text-frost text-xs font-mono tracking-widest uppercase transition-colors"
             >
               <span>Explore My Work</span>
               <ArrowDownRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform" />
             </motion.button>
-
-            <button
-              onClick={() => scrollTo('#about')}
-              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full border border-steel-midnight bg-navy-surface/40 hover:bg-navy-surface text-silver-ice hover:text-frost text-xs font-mono tracking-widest uppercase transition-colors"
-            >
-              <span>About Me</span>
-            </button>
           </div>
 
           {/* Academic Origin Subtext */}

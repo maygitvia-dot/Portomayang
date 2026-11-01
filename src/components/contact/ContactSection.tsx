@@ -26,7 +26,8 @@ export const ContactSection: React.FC = () => {
 
   const handleSendMail = (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(senderSubject || `Portfolio Inquiry from ${senderName || 'Visitor'}`);
+    const defaultSubject = '[Job Inquiry / Collaboration] - Regarding AI/ML Opportunities';
+    const subject = encodeURIComponent(senderSubject || defaultSubject);
     const body = encodeURIComponent(
       `Hello Mayang,\n\n${senderMessage}\n\nBest regards,\n${senderName}`
     );
@@ -176,7 +177,7 @@ export const ContactSection: React.FC = () => {
                     required
                     value={senderSubject}
                     onChange={(e) => setSenderSubject(e.target.value)}
-                    placeholder="e.g. AI Engineer Role / Project Discussion"
+                    placeholder="e.g. [Job Inquiry] - Regarding AI/ML Opportunities"
                     className="w-full px-3.5 py-2.5 rounded-lg border border-steel-midnight bg-navy-surface/50 text-frost placeholder:text-silver-muted/50 focus:outline-none focus:border-electric-blue transition-colors font-sans"
                   />
                 </div>

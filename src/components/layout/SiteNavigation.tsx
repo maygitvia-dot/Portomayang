@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X, Download } from 'lucide-react';
 
 interface SiteNavigationProps {
   activeSection?: string;
@@ -104,6 +104,23 @@ export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 
             })}
           </div>
 
+          {/* Open to Work status pill */}
+          <div className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-[10px] font-mono text-emerald-400 whitespace-nowrap">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            Open to Work
+          </div>
+
+          {/* Download CV button */}
+          <a
+            href="/resume.pdf"
+            download
+            className="flex items-center gap-1.5 text-xs font-mono px-3.5 py-1.5 rounded-full border border-electric-blue/50 bg-electric-blue/10 text-electric-blue hover:bg-electric-blue/20 hover:border-electric-blue transition-all whitespace-nowrap"
+          >
+            <Download className="w-3 h-3" />
+            <span>Download CV</span>
+          </a>
+
+          {/* Connect shortcut */}
           <a
             href="#contact"
             onClick={(e) => {
@@ -113,7 +130,6 @@ export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 
             className="flex items-center gap-1.5 text-xs font-mono px-3.5 py-1.5 rounded-full border border-steel-midnight bg-navy-deep/60 text-silver-ice hover:text-frost hover:border-electric-blue/50 transition-all"
           >
             <span>CONNECT</span>
-            <ArrowUpRight className="w-3 h-3 text-electric-blue" />
           </a>
         </nav>
 
@@ -145,7 +161,15 @@ export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 
                 <span className="text-xs text-electric-blue font-mono">0{idx + 1}</span>
               </a>
             ))}
-            <div className="pt-2">
+            <div className="pt-2 space-y-2">
+              <a
+                href="/resume.pdf"
+                download
+                className="flex items-center justify-center gap-2 text-xs font-mono py-3 rounded border border-electric-blue/50 bg-electric-blue/10 text-electric-blue hover:bg-electric-blue/20 transition-colors"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Download CV (PDF)
+              </a>
               <a
                 href="#contact"
                 onClick={(e) => {
@@ -156,6 +180,10 @@ export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 
               >
                 LET'S CONNECT →
               </a>
+              <div className="flex items-center justify-center gap-1.5 py-2 text-[11px] font-mono text-emerald-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                Open to Work · Jakarta / Hybrid / Remote
+              </div>
             </div>
           </div>
         </div>
