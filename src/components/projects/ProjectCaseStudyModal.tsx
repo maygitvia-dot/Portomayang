@@ -4,6 +4,7 @@ import { PROJECTS_DATA } from '../../data/portfolioData';
 import { ScovisCaseStudy } from './ScovisCaseStudy';
 import { TranslationCaseStudy } from './TranslationCaseStudy';
 import { ArrowLeft, X, ChevronRight } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface ProjectCaseStudyModalProps {
   project: ProjectData;
@@ -16,6 +17,7 @@ export const ProjectCaseStudyModal: React.FC<ProjectCaseStudyModalProps> = ({
   onClose,
   onSwitchProject,
 }) => {
+  const { t } = useLanguage();
   const [activeSubSection, setActiveSubSection] = useState<string>('problem');
 
   // Handle ESC key to close
@@ -35,11 +37,11 @@ export const ProjectCaseStudyModal: React.FC<ProjectCaseStudyModalProps> = ({
   }, [onClose]);
 
   const subSections = [
-    { id: 'section-problem', label: 'The Problem' },
-    { id: 'section-contribution', label: 'My Contribution' },
-    { id: 'section-process', label: 'Implementation' },
-    { id: 'section-results', label: 'Results' },
-    { id: 'section-resources', label: 'Resources' },
+    { id: 'section-problem', label: t('modal.problem') },
+    { id: 'section-contribution', label: t('modal.contribution') },
+    { id: 'section-process', label: t('modal.implementation') },
+    { id: 'section-results', label: t('modal.results') },
+    { id: 'section-resources', label: t('modal.resources') },
   ];
 
   const scrollToSection = (id: string) => {
@@ -64,7 +66,7 @@ export const ProjectCaseStudyModal: React.FC<ProjectCaseStudyModalProps> = ({
             className="group flex items-center gap-2 text-xs font-mono text-silver-ice hover:text-frost px-3 py-1.5 rounded-full border border-steel-midnight hover:border-electric-blue/50 transition-all"
           >
             <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
-            <span>BACK TO OVERVIEW</span>
+            <span>{t('modal.back')}</span>
           </button>
 
           <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-silver-muted border-l border-steel-midnight pl-4">
@@ -138,7 +140,7 @@ export const ProjectCaseStudyModal: React.FC<ProjectCaseStudyModalProps> = ({
           <div className="hidden lg:block lg:col-span-3">
             <div className="sticky top-28 space-y-3 font-mono text-xs">
               <div className="text-silver-muted uppercase tracking-widest text-[11px] mb-3">
-                CASE STUDY INDEX
+                {t('modal.index')}
               </div>
               {subSections.map((sec, idx) => (
                 <button
@@ -160,12 +162,12 @@ export const ProjectCaseStudyModal: React.FC<ProjectCaseStudyModalProps> = ({
 
               <div className="pt-6 border-t border-steel-midnight/40 text-[11px] text-silver-muted space-y-2">
                 <div>
-                  <span className="text-silver-ice block">Project Scope:</span>
+                  <span className="text-silver-ice block">{t('modal.scope')}</span>
                   <span>{project.role}</span>
                 </div>
                 <div>
-                  <span className="text-silver-ice block">Status:</span>
-                  <span className="text-arctic-cyan">Documented & Verified</span>
+                  <span className="text-silver-ice block">{t('modal.status')}</span>
+                  <span className="text-arctic-cyan">{t('modal.verified')}</span>
                 </div>
               </div>
             </div>

@@ -1,7 +1,10 @@
 import React from 'react';
 import { PERSONAL_INFO } from '../../data/portfolioData';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const SiteFooter: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
     <footer className="border-t border-steel-midnight bg-obsidian-dark py-12 px-6 sm:px-8 lg:px-12 text-xs font-mono text-silver-muted">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
@@ -24,10 +27,10 @@ export const SiteFooter: React.FC = () => {
 
         <div className="text-center md:text-right text-[11px] text-silver-muted space-y-1">
           <div>
-            © {new Date().getFullYear()} Mayang Gita Oktafia. Built with precision and intention.
+            © {new Date().getFullYear()} Mayang Gita Oktafia. {t('footer.builtWith')}
           </div>
           <div className="text-silver-muted/70">
-            Telecommunications Engineering → Applied Artificial Intelligence
+            {t('footer.signal')}
           </div>
         </div>
       </div>

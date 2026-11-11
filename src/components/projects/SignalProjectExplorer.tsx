@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { PROJECTS_DATA } from '../../data/portfolioData';
 import { ProjectData } from '../../types/portfolio';
 import { ArrowRight, ChevronDown } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface SignalProjectExplorerProps {
   onSelectCaseStudy: (project: ProjectData) => void;
@@ -11,6 +12,8 @@ interface SignalProjectExplorerProps {
 export const SignalProjectExplorer: React.FC<SignalProjectExplorerProps> = ({
   onSelectCaseStudy,
 }) => {
+  const { t } = useLanguage();
+
   return (
     <section id="projects" className="relative py-24 sm:py-32 border-b border-steel-midnight/40 overflow-hidden">
       {/* Background ambient lighting */}
@@ -23,16 +26,16 @@ export const SignalProjectExplorer: React.FC<SignalProjectExplorerProps> = ({
           <div>
             <div className="inline-flex items-center gap-2 text-xs font-mono tracking-widest_editorial uppercase text-laser-violet font-semibold mb-2">
               <span className="w-2 h-2 rounded-full bg-laser-violet animate-pulse" />
-              <span>FEATURED SOLUTIONS</span>
+              <span>{t('projects.label')}</span>
             </div>
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-frost font-light tracking-tight">
-              Selected Works & <br className="hidden sm:block" />
-              <span className="font-normal text-frost">Projects</span>
+              {t('projects.title')} <br className="hidden sm:block" />
+              <span className="font-normal text-frost">{t('projects.titleSpan')}</span>
             </h2>
           </div>
 
           <p className="max-w-md text-silver-ice text-sm sm:text-base font-sans font-light leading-relaxed lg:text-right">
-            Kumpulan implementasi deep learning, computer vision, dan sistem otomatisasi AI berbasis performa tinggi.
+            {t('projects.description')}
           </p>
         </div>
 
@@ -137,7 +140,7 @@ export const SignalProjectExplorer: React.FC<SignalProjectExplorerProps> = ({
                 {/* Bottom View Case Study Link with Arrow */}
                 <div className="mt-6 pt-5 border-t border-steel-midnight/60 flex items-center justify-between">
                   <div className="flex items-center gap-2 text-xs font-mono text-frost group-hover:text-electric-blue transition-colors font-medium">
-                    <span>View Case Study</span>
+                    <span>{t('projects.viewCaseStudy')}</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
 

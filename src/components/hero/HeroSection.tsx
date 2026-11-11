@@ -4,9 +4,11 @@ import { ArrowDownRight, Download, Plus, User, Orbit } from 'lucide-react';
 import { PERSONAL_INFO } from '../../data/portfolioData';
 import { SignalArc } from './SignalArc';
 import { Profile3DCard } from '../ui/Profile3DCard';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const HeroSection: React.FC = () => {
   const [visualMode, setVisualMode] = useState<'signal' | 'portrait'>('signal');
+  const { t } = useLanguage();
 
   const scrollTo = (id: string) => {
     const el = document.querySelector(id);
@@ -45,26 +47,26 @@ export const HeroSection: React.FC = () => {
             {/* Open to Work badge */}
             <div className="inline-flex items-center gap-2 font-mono text-xs px-3 py-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 w-fit">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Open to Work · Jakarta / Hybrid / Remote
+              {t('nav.openToWorkFull')}
             </div>
           </div>
 
           {/* Headline */}
           <h1 className="text-5xl sm:text-7xl lg:text-8xl font-serif font-light text-frost tracking-tight leading-[1.05]">
-            Intelligence, <br />
+            {t('hero.headline1')} <br />
             <motion.span
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.9, delay: 0.2 }}
               className="italic font-normal bg-gradient-to-r from-icy-lilac via-laser-violet to-electric-blue bg-clip-text text-transparent inline-block"
             >
-              with intention.
+              {t('hero.headline2')}
             </motion.span>
           </h1>
 
           {/* Supporting Narrative */}
           <p className="mt-8 text-base sm:text-lg text-silver-ice max-w-xl font-sans font-light leading-relaxed">
-            {PERSONAL_INFO.headlineSubtitle}
+            {t('hero.subtitle')}
           </p>
 
           {/* Call to Actions */}
@@ -76,7 +78,7 @@ export const HeroSection: React.FC = () => {
               className="group relative inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-gradient-to-r from-electric-blue to-laser-violet text-white text-xs font-mono tracking-widest uppercase font-medium shadow-signal-glow hover:shadow-laser-glow transition-all duration-300"
             >
               <Download className="w-4 h-4" />
-              <span>Download Resume</span>
+              <span>{t('hero.downloadResume')}</span>
             </a>
 
             {/* Secondary CTA: Explore Projects */}
@@ -86,18 +88,18 @@ export const HeroSection: React.FC = () => {
               onClick={() => scrollTo('#projects')}
               className="group inline-flex items-center gap-2 px-5 py-3.5 rounded-full border border-steel-midnight bg-navy-surface/40 hover:bg-navy-surface text-silver-ice hover:text-frost text-xs font-mono tracking-widest uppercase transition-colors"
             >
-              <span>Explore My Work</span>
+              <span>{t('hero.exploreWork')}</span>
               <ArrowDownRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform" />
             </motion.button>
           </div>
 
           {/* Academic Origin Subtext */}
           <div className="mt-12 pt-6 border-t border-steel-midnight/40 flex flex-wrap items-center gap-4 text-xs font-mono text-silver-muted">
-            <span className="text-electric-blue font-semibold">SIGNAL → INTELLIGENCE</span>
+            <span className="text-electric-blue font-semibold">{t('hero.signal')}</span>
             <span className="w-1.5 h-1.5 rounded-full bg-steel-midnight"></span>
-            <span>Telkom University S1 Engineering</span>
+            <span>{t('hero.university')}</span>
             <span className="w-1.5 h-1.5 rounded-full bg-steel-midnight"></span>
-            <span className="text-arctic-cyan">Bandung, Indonesia</span>
+            <span className="text-arctic-cyan">{t('hero.location')}</span>
           </div>
         </motion.div>
 
@@ -119,7 +121,7 @@ export const HeroSection: React.FC = () => {
               }`}
             >
               <Orbit className="w-3 h-3" />
-              <span>ORBITAL SIGNAL</span>
+              <span>{t('hero.orbitalSignal')}</span>
             </button>
             <button
               onClick={() => setVisualMode('portrait')}
@@ -130,7 +132,7 @@ export const HeroSection: React.FC = () => {
               }`}
             >
               <User className="w-3 h-3" />
-              <span>3D PORTRAIT</span>
+              <span>{t('hero.portrait3d')}</span>
             </button>
           </div>
 
@@ -171,11 +173,11 @@ export const HeroSection: React.FC = () => {
           <div className="w-6 h-6 rounded-full border border-steel-midnight flex items-center justify-center group-hover:border-electric-blue transition-colors">
             <Plus className="w-3 h-3 text-electric-blue group-hover:rotate-90 transition-transform duration-300" />
           </div>
-          <span className="tracking-widest uppercase text-[11px]">SCROLL TO EXPLORE</span>
+          <span className="tracking-widest uppercase text-[11px]">{t('hero.scrollExplore')}</span>
         </button>
 
         <div className="hidden sm:flex items-center gap-6 text-[11px] tracking-widest text-silver-muted/80">
-          <span>PORTFOLIO / 2026</span>
+          <span>{t('hero.portfolio')}</span>
           <span className="w-1 h-1 rounded-full bg-steel-midnight"></span>
           <span>MAYANG GITA OKTAFIA</span>
         </div>

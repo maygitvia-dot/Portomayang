@@ -4,10 +4,12 @@ import { PHILOSOPHY_PILLARS } from '../../data/portfolioData';
 import { SectionHeading } from '../ui/SectionHeading';
 import { Profile3DCard } from '../ui/Profile3DCard';
 import { GraduationCap } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const AboutSection: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'me' | 'approach' | 'beyond'>('me');
   const [activePillar, setActivePillar] = useState<number>(0);
+  const { t } = useLanguage();
 
   return (
     <motion.section
@@ -24,9 +26,9 @@ export const AboutSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         <SectionHeading
           number="02"
-          label="SPLIT NARRATIVE"
-          title="The Thinking Behind the Work"
-          description="Connecting telecommunications signal rigor with applied artificial intelligence and machine learning."
+          label={t('about.label')}
+          title={t('about.title')}
+          description={t('about.description')}
         />
 
         {/* 3-Column Split Narrative Layout matching Frame 02 */}
@@ -48,7 +50,7 @@ export const AboutSection: React.FC = () => {
               }`}
             >
               <span className="text-electric-blue">01</span>
-              <span>ABOUT ME</span>
+              <span>{t('about.tab.me')}</span>
             </button>
 
             <button
@@ -60,7 +62,7 @@ export const AboutSection: React.FC = () => {
               }`}
             >
               <span className="text-laser-violet">02</span>
-              <span>MY APPROACH</span>
+              <span>{t('about.tab.approach')}</span>
             </button>
 
             <button
@@ -72,15 +74,15 @@ export const AboutSection: React.FC = () => {
               }`}
             >
               <span className="text-arctic-cyan">03</span>
-              <span>BEYOND TECH</span>
+              <span>{t('about.tab.beyond')}</span>
             </button>
 
             <div className="hidden lg:block mt-8 p-4 rounded-lg border border-steel-midnight bg-navy-deep/20 font-sans text-xs text-silver-muted leading-relaxed">
               <div className="flex items-center gap-2 text-frost font-mono mb-2">
                 <GraduationCap className="w-4 h-4 text-electric-blue" />
-                <span>Telkom University</span>
+                <span>{t('about.telkom')}</span>
               </div>
-              <p>S1 Telecommunications Engineering graduate focused on computer vision & deep learning solutions.</p>
+              <p>{t('about.telkomDesc')}</p>
             </div>
           </motion.div>
 
@@ -114,13 +116,13 @@ export const AboutSection: React.FC = () => {
                   transition={{ duration: 0.4 }}
                 >
                   <h3 className="text-3xl sm:text-4xl font-serif font-light text-frost leading-snug">
-                    Turning curiosity into real-world solutions.
+                    {t('about.me.title')}
                   </h3>
                   <p className="mt-5 text-silver-ice text-sm sm:text-base leading-relaxed font-sans font-light">
-                    I'm Mayang, an AI / Machine Learning Engineer with an S1 degree in Telecommunications Engineering from Telkom University. I explore how artificial intelligence can solve concrete challenges—from assessing handwritten exams with computer vision to orchestrating autonomous document processing pipelines.
+                    {t('about.me.p1')}
                   </p>
                   <p className="mt-4 text-silver-muted text-xs sm:text-sm leading-relaxed font-sans">
-                    My telecommunications foundation provides an intuitive understanding of signal noise, filtering, data transformations, and system constraints. In AI, these map directly to feature extraction, tensor operations, and model deployment reality.
+                    {t('about.me.p2')}
                   </p>
                 </motion.div>
               )}
@@ -134,19 +136,19 @@ export const AboutSection: React.FC = () => {
                   transition={{ duration: 0.4 }}
                 >
                   <h3 className="text-3xl sm:text-4xl font-serif font-light text-frost leading-snug">
-                    Precision, baseline first, verified metrics.
+                    {t('about.approach.title')}
                   </h3>
                   <p className="mt-5 text-silver-ice text-sm sm:text-base leading-relaxed font-sans font-light">
-                    I approach machine learning with engineering discipline: understand the raw data first, test preprocessing hypotheses thoroughly, and report validation results transparently without inflating claims.
+                    {t('about.approach.p1')}
                   </p>
                   <div className="mt-4 grid grid-cols-2 gap-3 text-xs font-mono">
                     <div className="p-3 rounded border border-steel-midnight bg-navy-surface/40">
-                      <span className="text-electric-blue block mb-1">DATA FOCUS</span>
-                      <span className="text-silver-ice font-sans">1,560 samples curated & hand-labeled in SCOVIS.</span>
+                      <span className="text-electric-blue block mb-1">{t('about.approach.dataFocus')}</span>
+                      <span className="text-silver-ice font-sans">{t('about.approach.dataDesc')}</span>
                     </div>
                     <div className="p-3 rounded border border-steel-midnight bg-navy-surface/40">
-                      <span className="text-laser-violet block mb-1">AUTOMATION</span>
-                      <span className="text-silver-ice font-sans">End-to-end 7-node DAG orchestration in n8n.</span>
+                      <span className="text-laser-violet block mb-1">{t('about.approach.automation')}</span>
+                      <span className="text-silver-ice font-sans">{t('about.approach.automationDesc')}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -161,14 +163,14 @@ export const AboutSection: React.FC = () => {
                   transition={{ duration: 0.4 }}
                 >
                   <h3 className="text-3xl sm:text-4xl font-serif font-light text-frost leading-snug">
-                    Leadership, communication, and team cadence.
+                    {t('about.beyond.title')}
                   </h3>
                   <p className="mt-5 text-silver-ice text-sm sm:text-base leading-relaxed font-sans font-light">
-                    Beyond algorithms, I value clear communication and organizational accountability. Serving as General Treasurer for INTI PARLEMEN DPA HMTT taught me fiscal governance, transparency, and collaboration with diverse stakeholders.
+                    {t('about.beyond.p1')}
                   </p>
                   <div className="mt-4 p-3 rounded border border-steel-midnight bg-navy-surface/30 font-sans text-xs text-silver-ice">
-                    <span className="font-mono text-arctic-cyan block mb-1">INTERNSHIP EXPERIENCE</span>
-                    Practical telecommunications exposure at PT Kereta Api Indonesia (Persero) Divisi Sintelis Daop 3 Cirebon.
+                    <span className="font-mono text-arctic-cyan block mb-1">{t('about.beyond.internship')}</span>
+                    {t('about.beyond.internshipDesc')}
                   </div>
                 </motion.div>
               )}
@@ -177,11 +179,14 @@ export const AboutSection: React.FC = () => {
             {/* Interactive 3 Pillars Section */}
             <div className="mt-8 pt-8 border-t border-steel-midnight/50">
               <div className="font-mono text-xs tracking-widest text-silver-muted uppercase mb-4">
-                CORE PILLARS
+                {t('about.corePillars')}
               </div>
               <div className="space-y-3">
                 {PHILOSOPHY_PILLARS.map((pillar, idx) => {
                   const isSelected = activePillar === idx;
+                  const title = t(`about.pillar.${idx}.title`) || pillar.title;
+                  const headline = t(`about.pillar.${idx}.headline`) || pillar.headline;
+                  const description = t(`about.pillar.${idx}.desc`) || pillar.description;
                   return (
                     <motion.div
                       key={pillar.number}
@@ -200,11 +205,11 @@ export const AboutSection: React.FC = () => {
                           </span>
                           <span className="w-4 h-[1px] bg-steel-midnight"></span>
                           <h4 className="text-sm font-sans font-medium text-frost">
-                            {pillar.title}
+                            {title}
                           </h4>
                         </div>
                         <span className={`text-xs font-mono ${isSelected ? 'text-arctic-cyan' : 'text-silver-muted'}`}>
-                          {isSelected ? 'ACTIVE' : 'EXPAND'}
+                          {isSelected ? t('about.active') : t('about.expand')}
                         </span>
                       </div>
 
@@ -214,8 +219,8 @@ export const AboutSection: React.FC = () => {
                           animate={{ opacity: 1, height: 'auto' }}
                           className="mt-3 pl-8 text-xs text-silver-ice font-sans leading-relaxed"
                         >
-                          <p className="text-frost font-medium mb-1">{pillar.headline}</p>
-                          <p className="text-silver-muted">{pillar.description}</p>
+                          <p className="text-frost font-medium mb-1">{headline}</p>
+                          <p className="text-silver-muted">{description}</p>
                         </motion.div>
                       )}
                     </motion.div>

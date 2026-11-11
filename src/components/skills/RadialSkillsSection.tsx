@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { SKILL_CATEGORIES } from '../../data/portfolioData';
 import { SectionHeading } from '../ui/SectionHeading';
 import { CheckCircle2 } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const RadialSkillsSection: React.FC = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('deep-learning');
+  const { t } = useLanguage();
 
   const selectedCategory =
     SKILL_CATEGORIES.find((c) => c.id === selectedCategoryId) || SKILL_CATEGORIES[0];
@@ -26,9 +28,9 @@ export const RadialSkillsSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         <SectionHeading
           number="04"
-          label="SIGNAL → PROFICIENCY"
-          title="Skills & Technologies"
-          description="Factual technical proficiencies grounded in actual project execution and academic research."
+          label={t('skills.label')}
+          title={t('skills.title')}
+          description={t('skills.description')}
         />
 
         {/* Minimal Radial Layout inspired by Frame 06 */}
@@ -39,13 +41,13 @@ export const RadialSkillsSection: React.FC = () => {
               {/* Central Typographic Focal Point */}
               <div className="absolute left-10 sm:left-14 top-1/2 -translate-y-1/2 z-10 text-left">
                 <div className="text-3xl sm:text-4xl font-serif font-light text-frost">
-                  Core
+                  {t('skills.core')}
                 </div>
                 <div className="text-3xl sm:text-4xl font-serif italic text-icy-lilac">
-                  Skills
+                  {t('skills.coreSkills')}
                 </div>
                 <div className="mt-3 text-[11px] font-mono text-silver-muted tracking-widest uppercase">
-                  Applied Competencies
+                  {t('skills.appliedCompetencies')}
                 </div>
               </div>
 
@@ -130,7 +132,7 @@ export const RadialSkillsSection: React.FC = () => {
 
               {/* Bottom pointer caption */}
               <div className="absolute bottom-2 left-6 text-xs font-mono text-silver-muted flex items-center gap-1.5">
-                <span>Technologies I work with</span>
+                <span>{t('skills.techWork')}</span>
                 <span className="text-electric-blue">→</span>
               </div>
             </div>
@@ -142,14 +144,14 @@ export const RadialSkillsSection: React.FC = () => {
               <div className="flex items-center justify-between border-b border-steel-midnight/50 pb-4 mb-6">
                 <div>
                   <div className="text-xs font-mono text-electric-blue uppercase tracking-widest">
-                    Category Breakdown
+                    {t('skills.categoryBreakdown')}
                   </div>
                   <h3 className="text-2xl font-serif text-frost font-light mt-1">
                     {selectedCategory.name}
                   </h3>
                 </div>
                 <span className="px-3 py-1 rounded-full border border-steel-midnight bg-navy-surface text-xs font-mono text-silver-ice">
-                  {selectedCategory.skills.length} Documented Skills
+                  {selectedCategory.skills.length} {t('skills.documentedSkills')}
                 </span>
               </div>
 
@@ -180,7 +182,7 @@ export const RadialSkillsSection: React.FC = () => {
 
               {/* Factual Integrity Disclaimer */}
               <div className="mt-6 pt-4 border-t border-steel-midnight/40 text-[11px] font-mono text-silver-muted/80">
-                Grounded in practical implementation: Technologies shown represent hands-on toolsets utilized in academic research and automated pipelines, not hypothetical ratings.
+                {t('skills.disclaimer')}
               </div>
             </div>
           </div>

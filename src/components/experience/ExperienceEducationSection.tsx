@@ -9,8 +9,10 @@ import {
   MapPin,
   CheckCircle2
 } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const ExperienceEducationSection: React.FC = () => {
+  const { t } = useLanguage();
   const internship = EXPERIENCE_DATA.find((item) => item.type === 'internship');
   const orgExperiences = EXPERIENCE_DATA.filter((item) => item.type === 'organization');
 
@@ -22,9 +24,9 @@ export const ExperienceEducationSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         <SectionHeading
           number="05"
-          label="TRAJECTORY"
-          title="Experience & Education"
-          description="Telecommunications engineering infrastructure grounding complemented by academic training and leadership."
+          label={t('exp.label')}
+          title={t('exp.title')}
+          description={t('exp.description')}
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
@@ -36,7 +38,7 @@ export const ExperienceEducationSection: React.FC = () => {
                 <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-silver-muted mb-3">
                   <span className="text-electric-blue font-semibold uppercase tracking-wider flex items-center gap-1.5">
                     <Radio className="w-4 h-4" />
-                    Telecommunications Internship
+                    {t('exp.telecomInternship')}
                   </span>
                   <span className="flex items-center gap-1 text-silver-muted">
                     <Calendar className="w-3.5 h-3.5" />
@@ -58,7 +60,7 @@ export const ExperienceEducationSection: React.FC = () => {
                 {/* Practical Learning & Exposure Highlights */}
                 <div className="mt-6 space-y-2.5">
                   <div className="text-xs font-mono text-silver-muted uppercase tracking-wider">
-                    Supervised Practical Exposure & Hands-On Tasks:
+                    {t('exp.supervisedExposure')}
                   </div>
                   {internship.highlights.map((point, idx) => (
                     <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-silver-ice font-sans">
@@ -72,7 +74,7 @@ export const ExperienceEducationSection: React.FC = () => {
                 {internship.technologies && (
                   <div className="mt-6 pt-6 border-t border-steel-midnight/50">
                     <div className="text-xs font-mono text-silver-muted uppercase tracking-wider mb-2.5">
-                      Technical Systems & Tools Practiced
+                      {t('exp.techPracticed')}
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {internship.technologies.map((t, idx) => (
@@ -94,7 +96,7 @@ export const ExperienceEducationSection: React.FC = () => {
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-silver-muted mb-3">
                 <span className="text-laser-violet font-semibold uppercase tracking-wider flex items-center gap-1.5">
                   <GraduationCap className="w-4 h-4" />
-                  Completed Education
+                  {t('exp.completedEdu')}
                 </span>
                 <span>{EDUCATION_DATA.period}</span>
               </div>
@@ -108,14 +110,14 @@ export const ExperienceEducationSection: React.FC = () => {
 
               <div className="mt-4 p-3.5 rounded-lg border border-steel-midnight bg-obsidian-dark text-xs font-sans text-silver-ice">
                 <span className="font-mono text-electric-blue block mb-1 uppercase text-[10px]">
-                  Final Academic Thesis / Project:
+                  {t('exp.thesisProject')}
                 </span>
                 <span className="text-frost font-medium">{EDUCATION_DATA.thesisTitle}</span>
               </div>
 
               <div className="mt-5">
                 <div className="text-xs font-mono text-silver-muted uppercase tracking-wider mb-2">
-                  Key Coursework Grounding
+                  {t('exp.keyCoursework')}
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {EDUCATION_DATA.relevantCoursework.map((course, idx) => (
@@ -136,10 +138,10 @@ export const ExperienceEducationSection: React.FC = () => {
             <div className="p-6 sm:p-8 rounded-2xl border border-steel-midnight bg-obsidian-dark shadow-xl">
               <div className="flex items-center gap-2 text-xs font-mono text-arctic-cyan uppercase tracking-wider mb-4">
                 <Users className="w-4 h-4" />
-                <span>Selected Leadership & Student Roles</span>
+                <span>{t('exp.leadership')}</span>
               </div>
               <p className="text-xs text-silver-muted font-sans leading-relaxed mb-6">
-                Active campus leadership demonstrating budgetary management, public relations, and cross-functional team coordination.
+                {t('exp.leadershipDesc')}
               </p>
 
               <div className="space-y-4">

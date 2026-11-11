@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Download } from 'lucide-react';
+import { Menu, X, Download, Globe } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface SiteNavigationProps {
   activeSection?: string;
@@ -8,6 +9,7 @@ interface SiteNavigationProps {
 export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 'hero' }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { lang, toggleLang, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,11 +20,11 @@ export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 
   }, []);
 
   const navLinks = [
-    { label: 'ABOUT', href: '#about', id: 'about' },
-    { label: 'PROJECTS', href: '#projects', id: 'projects' },
-    { label: 'SKILLS', href: '#skills', id: 'skills' },
-    { label: 'EXPERIENCE', href: '#experience', id: 'experience' },
-    { label: 'CONTACT', href: '#contact', id: 'contact' },
+    { label: t('nav.about'), href: '#about', id: 'about' },
+    { label: t('nav.projects'), href: '#projects', id: 'projects' },
+    { label: t('nav.skills'), href: '#skills', id: 'skills' },
+    { label: t('nav.experience'), href: '#experience', id: 'experience' },
+    { label: t('nav.contact'), href: '#contact', id: 'contact' },
   ];
 
   const handleNavClick = (href: string) => {
@@ -73,14 +75,14 @@ export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 
               Mayang Gita Oktafia
             </span>
             <span className="text-[10px] font-mono tracking-widest text-silver-muted uppercase hidden sm:block">
-              AI / ML Engineer
+              {t('nav.subtitle')}
             </span>
           </div>
         </a>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
-          <div className="flex items-center gap-7 text-xs font-mono tracking-widest_editorial text-silver-ice">
+        <nav className="hidden md:flex items-center gap-6 xl:gap-8">
+          <div className="flex items-center gap-5 xl:gap-7 text-xs font-mono tracking-widest_editorial text-silver-ice">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
@@ -104,10 +106,20 @@ export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 
             })}
           </div>
 
+          {/* Language Toggle Button */}
+          <button
+            onClick={toggleLang}
+            aria-label="Toggle language"
+            className="flex items-center gap-1.5 text-[10px] font-mono px-2.5 py-1.5 rounded-full border border-steel-midnight bg-navy-deep/60 text-silver-ice hover:text-frost hover:border-laser-violet/50 transition-all"
+          >
+            <Globe className="w-3 h-3 text-laser-violet" />
+            <span className="font-semibold">{lang === 'en' ? 'ID' : 'EN'}</span>
+          </button>
+
           {/* Open to Work status pill */}
           <div className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-[10px] font-mono text-emerald-400 whitespace-nowrap">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Open to Work
+            {t('nav.openToWork')}
           </div>
 
           {/* Download CV button */}
@@ -117,7 +129,7 @@ export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 
             className="flex items-center gap-1.5 text-xs font-mono px-3.5 py-1.5 rounded-full border border-electric-blue/50 bg-electric-blue/10 text-electric-blue hover:bg-electric-blue/20 hover:border-electric-blue transition-all whitespace-nowrap"
           >
             <Download className="w-3 h-3" />
-            <span>Download CV</span>
+            <span>{t('nav.downloadCv')}</span>
           </a>
 
           {/* Connect shortcut */}
@@ -129,18 +141,29 @@ export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 
             }}
             className="flex items-center gap-1.5 text-xs font-mono px-3.5 py-1.5 rounded-full border border-steel-midnight bg-navy-deep/60 text-silver-ice hover:text-frost hover:border-electric-blue/50 transition-all"
           >
-            <span>CONNECT</span>
+            <span>{t('nav.connect')}</span>
           </a>
         </nav>
 
-        {/* Mobile menu toggle */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          className="md:hidden p-2 text-silver-ice hover:text-frost border border-steel-midnight rounded bg-navy-deep/80"
-        >
-          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        {/* Mobile: Language toggle + Hamburger */}
+        <div className="md:hidden flex items-center gap-2">
+          <button
+            onClick={toggleLang}
+            aria-label="Toggle language"
+            className="flex items-center gap-1 text-[10px] font-mono px-2 py-1.5 rounded border border-steel-midnight bg-navy-deep/80 text-silver-ice hover:text-frost"
+          >
+            <Globe className="w-3 h-3 text-laser-violet" />
+            <span className="font-semibold">{lang === 'en' ? 'ID' : 'EN'}</span>
+          </button>
+
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            className="p-2 text-silver-ice hover:text-frost border border-steel-midnight rounded bg-navy-deep/80"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu Drawer */}
@@ -168,7 +191,7 @@ export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 
                 className="flex items-center justify-center gap-2 text-xs font-mono py-3 rounded border border-electric-blue/50 bg-electric-blue/10 text-electric-blue hover:bg-electric-blue/20 transition-colors"
               >
                 <Download className="w-3.5 h-3.5" />
-                Download CV (PDF)
+                {t('nav.downloadCv')} (PDF)
               </a>
               <a
                 href="#contact"
@@ -178,11 +201,11 @@ export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 
                 }}
                 className="block text-center text-xs font-mono py-3 rounded border border-electric-blue/40 bg-electric-blue/10 text-frost hover:bg-electric-blue/20 transition-colors"
               >
-                LET'S CONNECT →
+                {t('nav.letsConnect')}
               </a>
               <div className="flex items-center justify-center gap-1.5 py-2 text-[11px] font-mono text-emerald-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Open to Work · Jakarta / Hybrid / Remote
+                {t('nav.openToWorkFull')}
               </div>
             </div>
           </div>

@@ -12,7 +12,7 @@ export const PERSONAL_INFO = {
   location: "Bandung / Cirebon, Indonesia",
   email: "mayanggitaoktafia@gmail.com",
   linkedin: "https://linkedin.com/in/mayanggitaoktafia",
-  github: "https://github.com/mayanggita",
+  github: "https://github.com/maygitvia-dot",
   availability: "Available for AI / ML Engineer & Technical Roles",
 };
 
@@ -175,7 +175,7 @@ def predict_essay_score(model, image_path: str, manifest_path: str = "model_mani
       ]
     },
     resources: {
-      githubUrl: "https://github.com/mayanggita/scovis-essay-eval",
+      githubUrl: "https://github.com/maygitvia-dot/scovis-essay-eval",
       demoNote: "Academic project codebase and inference verification scripts.",
       artifacts: [
         {
@@ -359,7 +359,7 @@ Source Text:
       ]
     },
     resources: {
-      githubUrl: "https://github.com/mayanggita/n8n-gemini-document-translator",
+      githubUrl: "https://github.com/maygitvia-dot/n8n-gemini-document-translator",
       demoNote: "Workflow blueprint JSON and configuration documentation.",
       artifacts: [
         {

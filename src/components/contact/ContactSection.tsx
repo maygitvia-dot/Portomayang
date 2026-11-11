@@ -11,8 +11,10 @@ import {
   Sparkles,
   ExternalLink
 } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const ContactSection: React.FC = () => {
+  const { t } = useLanguage();
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [senderName, setSenderName] = useState('');
   const [senderSubject, setSenderSubject] = useState('');
@@ -69,21 +71,21 @@ export const ContactSection: React.FC = () => {
         <div className="text-xs font-mono tracking-widest_editorial text-silver-muted uppercase mb-4 flex items-center gap-2">
           <span className="text-electric-blue">06</span>
           <span className="w-4 h-[1px] bg-steel-midnight" />
-          <span className="text-icy-lilac">DISTINCT CLOSURE</span>
+          <span className="text-icy-lilac">{t('contact.label')}</span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column: Direct Narrative & Contact Channels */}
           <div className="lg:col-span-7">
             <h2 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-light text-frost tracking-tight leading-[1.08]">
-              Let’s build <br />
+              {t('contact.title1')} <br />
               <span className="italic font-normal bg-gradient-to-r from-icy-lilac via-laser-violet to-electric-blue bg-clip-text text-transparent">
-                something meaningful.
+                {t('contact.title2')}
               </span>
             </h2>
 
             <p className="mt-6 text-silver-ice text-base sm:text-lg max-w-xl font-sans font-light leading-relaxed">
-              I’m open to entry-level AI/ML Engineer opportunities, graduate programs, research collaborations, or a thoughtful conversation about practical machine learning.
+              {t('contact.description')}
             </p>
 
             {/* Direct Channels List matching Frame 07 */}
@@ -104,7 +106,7 @@ export const ContactSection: React.FC = () => {
                 >
                   {copiedEmail ? (
                     <span className="text-arctic-cyan text-[11px] flex items-center gap-1">
-                      <Check className="w-3.5 h-3.5" /> Copied
+                      <Check className="w-3.5 h-3.5" /> {t('contact.copied')}
                     </span>
                   ) : (
                     <Copy className="w-3.5 h-3.5" />
@@ -135,7 +137,7 @@ export const ContactSection: React.FC = () => {
               >
                 <div className="flex items-center gap-3 text-silver-ice group-hover:text-frost">
                   <Github className="w-4 h-4 text-arctic-cyan flex-shrink-0" />
-                  <span className="truncate">github.com/mayanggita</span>
+                  <span className="truncate">github.com/maygitvia-dot</span>
                 </div>
                 <ExternalLink className="w-3.5 h-3.5 text-silver-muted group-hover:text-frost" />
               </a>
@@ -147,51 +149,51 @@ export const ContactSection: React.FC = () => {
             <div className="p-6 sm:p-8 rounded-2xl border border-steel-midnight bg-obsidian-dark shadow-2xl relative">
               <div className="text-xs font-mono text-silver-muted uppercase tracking-wider mb-2 flex items-center gap-2">
                 <Sparkles className="w-3.5 h-3.5 text-electric-blue" />
-                <span>Direct Message Dispatcher</span>
+                <span>{t('contact.dispatcher')}</span>
               </div>
               <h3 className="text-lg font-serif text-frost font-light mb-4">
-                Send a note directly to my inbox
+                {t('contact.sendNote')}
               </h3>
 
               <form onSubmit={handleSendMail} className="space-y-4 text-xs font-mono">
                 <div>
                   <label className="block text-silver-muted mb-1 text-[11px] uppercase">
-                    Your Name
+                    {t('contact.yourName')}
                   </label>
                   <input
                     type="text"
                     required
                     value={senderName}
                     onChange={(e) => setSenderName(e.target.value)}
-                    placeholder="e.g. Hiring Manager / Collaborator"
+                    placeholder={t('contact.namePlaceholder')}
                     className="w-full px-3.5 py-2.5 rounded-lg border border-steel-midnight bg-navy-surface/50 text-frost placeholder:text-silver-muted/50 focus:outline-none focus:border-electric-blue transition-colors font-sans"
                   />
                 </div>
 
                 <div>
                   <label className="block text-silver-muted mb-1 text-[11px] uppercase">
-                    Subject / Topic
+                    {t('contact.subject')}
                   </label>
                   <input
                     type="text"
                     required
                     value={senderSubject}
                     onChange={(e) => setSenderSubject(e.target.value)}
-                    placeholder="e.g. [Job Inquiry] - Regarding AI/ML Opportunities"
+                    placeholder={t('contact.subjectPlaceholder')}
                     className="w-full px-3.5 py-2.5 rounded-lg border border-steel-midnight bg-navy-surface/50 text-frost placeholder:text-silver-muted/50 focus:outline-none focus:border-electric-blue transition-colors font-sans"
                   />
                 </div>
 
                 <div>
                   <label className="block text-silver-muted mb-1 text-[11px] uppercase">
-                    Message
+                    {t('contact.message')}
                   </label>
                   <textarea
                     rows={4}
                     required
                     value={senderMessage}
                     onChange={(e) => setSenderMessage(e.target.value)}
-                    placeholder="Write your note or question here..."
+                    placeholder={t('contact.messagePlaceholder')}
                     className="w-full px-3.5 py-2.5 rounded-lg border border-steel-midnight bg-navy-surface/50 text-frost placeholder:text-silver-muted/50 focus:outline-none focus:border-electric-blue transition-colors font-sans resize-none"
                   />
                 </div>
@@ -201,10 +203,10 @@ export const ContactSection: React.FC = () => {
                   className="w-full py-3 rounded-lg bg-electric-blue hover:bg-electric-blue/90 text-white font-mono uppercase tracking-widest text-xs flex items-center justify-center gap-2 shadow-signal-glow transition-all"
                 >
                   <Send className="w-3.5 h-3.5" />
-                  <span>Compose & Send via Email</span>
+                  <span>{t('contact.sendBtn')}</span>
                 </button>
                 <p className="text-[10px] text-silver-muted/70 text-center font-sans">
-                  Opens your mail client directly with your drafted inquiry.
+                  {t('contact.sendInfo')}
                 </p>
               </form>
             </div>
@@ -220,7 +222,7 @@ export const ContactSection: React.FC = () => {
                   <ArrowUp className="w-5 h-5 text-electric-blue group-hover:-translate-y-0.5 transition-transform" />
                 </div>
                 <span className="font-mono text-[10px] tracking-widest uppercase">
-                  BACK TO TOP
+                  {t('contact.backToTop')}
                 </span>
               </button>
             </div>
