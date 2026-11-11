@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, RotateCcw, ChevronRight, Cpu, Eye, Layers, CheckCircle2 } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface SimSample {
   id: string;
@@ -15,7 +16,7 @@ interface SimSample {
   latency_ms: number;
 }
 
-const SAMPLES: SimSample[] = [
+const SAMPLES_EN: SimSample[] = [
   {
     id: 'STG-011-A',
     label: 'Sample A — High Quality Writing',
@@ -54,15 +55,61 @@ const SAMPLES: SimSample[] = [
   },
 ];
 
+const SAMPLES_ID: SimSample[] = [
+  {
+    id: 'STG-011-A',
+    label: 'Sampel A — Tulisan Kualitas Tinggi',
+    tier: 'Tingkat 1 — Sangat Baik',
+    score: 88,
+    confidence: 87.4,
+    rawDesc: 'Tulisan tangan rapi, spasi konsisten, struktur jawaban jelas dengan notasi matematika teratur.',
+    preprocessDesc: 'Threshold adaptif menghilangkan grain background. Guratan binarisasi tajam dan terpisah baik — ideal untuk ekstraksi fitur.',
+    predicted_class: 'Tier_1_Excellent',
+    backbone: 'MobileNetV2_BiLSTM',
+    latency_ms: 38,
+  },
+  {
+    id: 'STG-042-B',
+    label: 'Sampel B — Tulisan Kualitas Cukup',
+    tier: 'Tingkat 2 — Cukup Kompeten',
+    score: 68,
+    confidence: 71.2,
+    rawDesc: 'Kejelasan tulisan sedang. Sedikit padat pada persamaan, sedikit noda di dekat margin.',
+    preprocessDesc: 'Binarisasi memperlihatkan struktur teks, meski beberapa karakter bertumpuk memunculkan sedikit noise pada region tensor.',
+    predicted_class: 'Tier_2_Competent',
+    backbone: 'MobileNetV2_BiLSTM',
+    latency_ms: 42,
+  },
+  {
+    id: 'STG-087-C',
+    label: 'Sampel C — Tulisan Kualitas Rendah',
+    tier: 'Tingkat 3 — Perlu Peningkatan',
+    score: 44,
+    confidence: 54.8,
+    rawDesc: 'Tekanan pena tidak konsisten, tata letak padat, ekspresi matematika sukar dipahami.',
+    preprocessDesc: 'Threshold adaptif mengisolasi guratan namun bercak noise signifikan masih tersisa. Peta fitur spasial memperlihatkan region padat.',
+    predicted_class: 'Tier_3_Developing',
+    backbone: 'MobileNetV2_BiLSTM',
+    latency_ms: 47,
+  },
+];
+
 type SimStep = 'idle' | 'raw' | 'preprocess' | 'inference' | 'result';
 
 const TIER_COLORS: Record<string, string> = {
   'Tier 1 — Excellent': 'text-arctic-cyan',
   'Tier 2 — Competent': 'text-electric-blue',
   'Tier 3 — Developing': 'text-icy-lilac',
+  'Tingkat 1 — Sangat Baik': 'text-arctic-cyan',
+  'Tingkat 2 — Cukup Kompeten': 'text-electric-blue',
+  'Tingkat 3 — Perlu Peningkatan': 'text-icy-lilac',
 };
 
 export const ScovisSimulator: React.FC = () => {
+  const { lang } = useLanguage();
+  const isId = lang === 'id';
+  const samples = isId ? SAMPLES_ID : SAMPLES_EN;
+
   const [selected, setSelected] = useState<SimSample | null>(null);
   const [step, setStep] = useState<SimStep>('idle');
   const [isRunning, setIsRunning] = useState(false);
@@ -87,10 +134,10 @@ export const ScovisSimulator: React.FC = () => {
   };
 
   const steps: { key: SimStep; label: string; icon: React.ReactNode; color: string }[] = [
-    { key: 'raw', label: 'Raw Input', icon: <Eye className="w-3 h-3" />, color: 'text-silver-ice' },
-    { key: 'preprocess', label: 'OpenCV Preprocess', icon: <Layers className="w-3 h-3" />, color: 'text-electric-blue' },
-    { key: 'inference', label: 'NN Forward Pass', icon: <Cpu className="w-3 h-3" />, color: 'text-laser-violet' },
-    { key: 'result', label: 'Prediction Output', icon: <CheckCircle2 className="w-3 h-3" />, color: 'text-arctic-cyan' },
+    { key: 'raw', label: isId ? 'Input Mentah' : 'Raw Input', icon: <Eye className="w-3 h-3" />, color: 'text-silver-ice' },
+    { key: 'preprocess', label: isId ? 'Pra-pemrosesan OpenCV' : 'OpenCV Preprocess', icon: <Layers className="w-3 h-3" />, color: 'text-electric-blue' },
+    { key: 'inference', label: isId ? 'Forward Pass Jaringan Saraf' : 'NN Forward Pass', icon: <Cpu className="w-3 h-3" />, color: 'text-laser-violet' },
+    { key: 'result', label: isId ? 'Hasil Prediksi' : 'Prediction Output', icon: <CheckCircle2 className="w-3 h-3" />, color: 'text-arctic-cyan' },
   ];
 
   const stepIndex = steps.findIndex((s) => s.key === step);
@@ -102,13 +149,15 @@ export const ScovisSimulator: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-laser-violet mb-1">
             <span className="w-1.5 h-1.5 rounded-full bg-laser-violet animate-pulse" />
-            Interactive Pipeline Simulator
+            {isId ? 'Simulator Pipeline Interaktif' : 'Interactive Pipeline Simulator'}
           </div>
           <h4 className="text-sm sm:text-base font-serif text-frost font-medium">
-            SCOVIS Inference Playground
+            {isId ? 'Playground Inferensi SCOVIS' : 'SCOVIS Inference Playground'}
           </h4>
           <p className="text-[11px] text-silver-muted font-sans mt-0.5">
-            Select a handwriting sample to run the end-to-end preprocessing → inference pipeline (client-side mock).
+            {isId
+              ? 'Pilih sampel potongan tulisan tangan untuk menjalankan pipeline end-to-end (simulasi sisi klien).'
+              : 'Select a handwriting sample to run the end-to-end preprocessing → inference pipeline (client-side mock).'}
           </p>
         </div>
         {step !== 'idle' && (
@@ -117,14 +166,14 @@ export const ScovisSimulator: React.FC = () => {
             className="flex items-center gap-1.5 text-[10px] font-mono text-silver-muted hover:text-frost border border-steel-midnight px-2.5 py-1.5 rounded-lg hover:border-electric-blue/40 transition-all"
           >
             <RotateCcw className="w-3 h-3" />
-            Reset
+            {isId ? 'Atur Ulang' : 'Reset'}
           </button>
         )}
       </div>
 
       {/* Sample Selector */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-        {SAMPLES.map((sample) => {
+        {samples.map((sample) => {
           const isActive = selected?.id === sample.id;
           return (
             <button
@@ -197,7 +246,9 @@ export const ScovisSimulator: React.FC = () => {
             <div className="w-12 h-12 rounded-full border border-steel-midnight flex items-center justify-center bg-navy-deep/50">
               <Play className="w-5 h-5 text-laser-violet ml-0.5" />
             </div>
-            <p className="text-xs text-silver-muted font-mono">Select a sample above to begin the simulation</p>
+            <p className="text-xs text-silver-muted font-mono">
+              {isId ? 'Pilih salah satu sampel di atas untuk memulai simulasi' : 'Select a sample above to begin the simulation'}
+            </p>
           </motion.div>
         )}
 
@@ -214,7 +265,7 @@ export const ScovisSimulator: React.FC = () => {
             <div className={`p-4 rounded-xl border transition-all ${step === 'raw' ? 'border-electric-blue/60 bg-obsidian-dark' : 'border-steel-midnight bg-obsidian-dark/60'}`}>
               <div className="text-[10px] font-mono uppercase tracking-wider text-silver-muted mb-2 flex items-center gap-1.5">
                 <Eye className="w-3 h-3" />
-                Step 1 — Raw Input
+                {isId ? 'Langkah 1 — Input Mentah' : 'Step 1 — Raw Input'}
               </div>
               {/* Simulated handwriting image placeholder */}
               <div className="aspect-[4/3] rounded-lg bg-[#0a0f1d] border border-steel-midnight/60 flex items-center justify-center mb-2 relative overflow-hidden">
@@ -224,7 +275,9 @@ export const ScovisSimulator: React.FC = () => {
                   }}
                 />
                 <div className="text-center px-4">
-                  <div className="font-mono text-[10px] text-silver-muted mb-2">Handwritten Answer Crop</div>
+                  <div className="font-mono text-[10px] text-silver-muted mb-2">
+                    {isId ? 'Potongan Esai Tulisan Tangan' : 'Handwritten Answer Crop'}
+                  </div>
                   <div className="text-[9px] text-silver-muted/60 font-sans leading-relaxed italic">
                     {selected.rawDesc}
                   </div>
@@ -237,7 +290,7 @@ export const ScovisSimulator: React.FC = () => {
             <div className={`p-4 rounded-xl border transition-all ${step === 'preprocess' ? 'border-laser-violet/60 bg-obsidian-dark' : 'border-steel-midnight bg-obsidian-dark/40 opacity-50'}`}>
               <div className="text-[10px] font-mono uppercase tracking-wider text-silver-muted mb-2 flex items-center gap-1.5">
                 <Layers className="w-3 h-3 text-laser-violet" />
-                Step 2 — OpenCV Binarization
+                {isId ? 'Langkah 2 — Binarisasi OpenCV' : 'Step 2 — OpenCV Binarization'}
               </div>
               <div className="aspect-[4/3] rounded-lg border border-steel-midnight/60 flex items-center justify-center mb-2 relative overflow-hidden"
                 style={{ background: '#f5f5f5' }}
@@ -246,14 +299,18 @@ export const ScovisSimulator: React.FC = () => {
                   <>
                     <div className="absolute inset-0 bg-white" />
                     <div className="text-center px-4 relative z-10">
-                      <div className="font-mono text-[10px] text-gray-600 mb-2">After Adaptive Threshold + Binarization</div>
+                      <div className="font-mono text-[10px] text-gray-600 mb-2">
+                        {isId ? 'Setelah Threshold Adaptif + Binarisasi' : 'After Adaptive Threshold + Binarization'}
+                      </div>
                       <div className="text-[9px] text-gray-500 font-sans leading-relaxed italic">
                         {selected.preprocessDesc}
                       </div>
                     </div>
                   </>
                 ) : (
-                  <div className="text-[10px] font-mono text-silver-muted/40">Awaiting step 1...</div>
+                  <div className="text-[10px] font-mono text-silver-muted/40">
+                    {isId ? 'Menunggu langkah 1...' : 'Awaiting step 1...'}
+                  </div>
                 )}
               </div>
               {step === 'preprocess' && (
@@ -279,7 +336,7 @@ export const ScovisSimulator: React.FC = () => {
           >
             <div className="text-[10px] font-mono uppercase tracking-wider text-laser-violet flex items-center justify-center gap-2">
               <Cpu className="w-3.5 h-3.5 animate-spin" />
-              Step 3 — Neural Network Forward Pass
+              {isId ? 'Langkah 3 — Forward Pass Jaringan Saraf' : 'Step 3 — Neural Network Forward Pass'}
             </div>
             <div className="font-mono text-xs text-silver-muted space-y-1.5">
               <div className="flex justify-center gap-2 flex-wrap">
@@ -308,7 +365,9 @@ export const ScovisSimulator: React.FC = () => {
                   />
                 ))}
               </div>
-              <span className="text-xs font-mono text-silver-muted">Processing tensor...</span>
+              <span className="text-xs font-mono text-silver-muted">
+                {isId ? 'Memproses tensor fitur...' : 'Processing tensor...'}
+              </span>
             </div>
           </motion.div>
         )}
@@ -326,17 +385,20 @@ export const ScovisSimulator: React.FC = () => {
               <div>
                 <div className="text-[10px] font-mono uppercase tracking-wider text-arctic-cyan mb-1 flex items-center gap-1.5">
                   <CheckCircle2 className="w-3 h-3" />
-                  Step 4 — Prediction Output
+                  {isId ? 'Langkah 4 — Hasil Prediksi' : 'Step 4 — Prediction Output'}
                 </div>
                 <div className={`text-lg font-serif font-medium ${TIER_COLORS[selected.tier] ?? 'text-frost'}`}>
                   {selected.tier}
                 </div>
                 <div className="text-xs font-mono text-silver-muted mt-0.5">
-                  Normalized Score: <span className="text-frost font-semibold">{selected.score} / 100</span>
+                  {isId ? 'Skor Ternormalisasi: ' : 'Normalized Score: '}
+                  <span className="text-frost font-semibold">{selected.score} / 100</span>
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-[10px] font-mono text-silver-muted uppercase">Confidence</div>
+                <div className="text-[10px] font-mono text-silver-muted uppercase">
+                  {isId ? 'Kepercayaan (Confidence)' : 'Confidence'}
+                </div>
                 <div className="text-2xl font-mono font-semibold text-arctic-cyan">
                   {selected.confidence}%
                 </div>
@@ -346,7 +408,7 @@ export const ScovisSimulator: React.FC = () => {
             {/* Confidence bar */}
             <div className="space-y-1.5">
               <div className="flex justify-between text-[10px] font-mono text-silver-muted">
-                <span>Softmax Confidence</span>
+                <span>{isId ? 'Keyakinan Softmax' : 'Softmax Confidence'}</span>
                 <span>{selected.confidence}%</span>
               </div>
               <div className="h-1.5 bg-steel-midnight rounded-full overflow-hidden">
@@ -361,7 +423,9 @@ export const ScovisSimulator: React.FC = () => {
 
             {/* JSON manifest */}
             <div className="rounded-xl border border-steel-midnight bg-obsidian-dark p-4 font-mono text-[11px] overflow-x-auto">
-              <div className="text-[10px] uppercase tracking-wider text-silver-muted mb-2">JSON Inference Manifest</div>
+              <div className="text-[10px] uppercase tracking-wider text-silver-muted mb-2">
+                {isId ? 'Manifes Inferensi JSON' : 'JSON Inference Manifest'}
+              </div>
               <pre className="text-icy-lilac leading-relaxed whitespace-pre-wrap break-all">
 {`{
   "sample_id": "${selected.id}",
@@ -375,7 +439,9 @@ export const ScovisSimulator: React.FC = () => {
             </div>
 
             <p className="text-[10px] font-sans text-silver-muted leading-relaxed">
-              ⚠ This is a client-side simulation using representative mock data aligned with actual SCOVIS model behaviour. Real inference runs the full MobileNetV2 + BiLSTM pipeline on the Keras/TF runtime.
+              {isId
+                ? '⚠ Ini adalah simulasi sisi klien menggunakan data tiruan representatif yang disesuaikan dengan karakteristik model SCOVIS sebenarnya. Inferensi nyata menjalankan pipeline MobileNetV2 + BiLSTM penuh pada runtime Keras/TensorFlow.'
+                : '⚠ This is a client-side simulation using representative mock data aligned with actual SCOVIS model behaviour. Real inference runs the full MobileNetV2 + BiLSTM pipeline on the Keras/TF runtime.'}
             </p>
           </motion.div>
         )}

@@ -391,6 +391,389 @@ Source Text:
   }
 ];
 
+export const PROJECTS_DATA_ID: ProjectData[] = [
+  {
+    id: "scovis",
+    numericId: "01",
+    tagline: "Deep learning untuk penilaian esai",
+    title: "SCOVIS",
+    subtitle: "Penilaian Esai Tulisan Tangan Berbasis Citra Menggunakan Deep Learning",
+    fullTitle: "SCOVIS: Penilaian Esai Tulisan Tangan Berbasis Citra Menggunakan Deep Learning",
+    category: "Deep Learning & Computer Vision",
+    period: "Proyek Penelitian Akademik",
+    role: "Pengembang Model ML & Kontributor Pipeline Data",
+    stack: [
+      "Python",
+      "TensorFlow / Keras",
+      "MobileNetV2",
+      "BiLSTM",
+      "OpenCV",
+      "Image Preprocessing",
+      "Deep Learning",
+      "Model Evaluation"
+    ],
+    summary: "Proyek penelitian akademik kolaboratif yang dirancang untuk mengevaluasi dan menilai jawaban esai tulisan tangan mahasiswa secara otomatis menggunakan jaringan saraf konvolusional dan rekuren hibrida.",
+    problem: {
+      statement: "Penilaian manual terhadap esai ujian tulisan tangan mahasiswa pada dasarnya memakan banyak waktu, bersifat subjektif, rentan terhadap kelelahan pemeriksa, dan sulit distandarisasi untuk jumlah mahasiswa yang banyak.",
+      challenges: [
+        "Variasi tinggi dalam gaya tulisan tangan, kemiringan, dan ketebalan tinta tiap individu",
+        "Subjektivitas dan kelelahan koreksi pada evaluasi manual",
+        "Derau (noise) pemindaian dokumen, variasi pencahayaan, dan bekas lipatan kertas",
+        "Sifat sekuensial dari argumen tertulis dipadukan dengan fitur visual spasial"
+      ],
+      objectives: [
+        "Mengekstrak fitur visual spasial dari potongan jawaban esai tulisan tangan menggunakan feature extractor CNN",
+        "Menangkap ketergantungan sekuensial dalam jawaban teks tertulis menggunakan Bidirectional LSTM",
+        "Membangun baseline penilaian otomatis yang divalidasi pada lembar ujian kuliah nyata"
+      ]
+    },
+    myContribution: [
+      "Berpartisipasi aktif dalam pengumpulan 1.560 sampel citra jawaban ujian tulisan tangan dari 65 mahasiswa.",
+      "Berkontribusi pada pelabelan dataset manual dan validasi ground-truth sebagai bagian dari tim akademik.",
+      "Merancang pipeline preprocessing citra khusus model (normalisasi grayscale, adaptive thresholding, penyesuaian ukuran, dan pemformatan tensor).",
+      "Merancang, mengembangkan, melatih, dan menguji tolok ukur arsitektur deep learning hibrida MobileNetV2 + BiLSTM di TensorFlow/Keras.",
+      "Mengimplementasikan dan mengadaptasi fungsi inferensi Python untuk memuat bobot model terlatih dan menghasilkan prediksi dari potongan citra.",
+      "Menyusun manifes JSON untuk metadata model, pemetaan label, dan dokumentasi inferensi."
+    ],
+    technicalProcess: {
+      overview: "Pipeline penilaian memproses hasil pemindaian ujian tulisan tangan mentah melalui preprocessing bertahap, ekstraksi fitur spasial, pemodelan sekuens temporal, dan klasifikasi dense.",
+      steps: [
+        {
+          step: "01",
+          title: "Akuisisi & Anotasi Dataset",
+          description: "Mengkurasi 1.560 citra jawaban tulisan tangan dari 65 mahasiswa yang menjawab 4 soal ujian Steganografi (bagian a–f). Penilaian ground-truth berbasis tim dan pemotongan bounding-box."
+        },
+        {
+          step: "02",
+          title: "Preprocessing Citra Terarah",
+          description: "Menerapkan pipeline citra OpenCV: peningkatan kontras, adaptive thresholding, reduksi derau (denoising), dan penyesuaian ukuran tensor dengan preservasi aspect ratio."
+        },
+        {
+          step: "03",
+          title: "Ekstraksi Fitur Spasial (MobileNetV2)",
+          description: "Memanfaatkan inverted residual blocks dari MobileNetV2 untuk menghasilkan peta fitur 2D yang ringkas dari potongan tulisan tangan dengan efisiensi parameter yang tinggi."
+        },
+        {
+          step: "04",
+          title: "Pemodelan Sekuens (BiLSTM)",
+          description: "Memasukkan sekuens fitur spasial ke lapisan Bidirectional LSTM untuk mempertahankan hubungan konteks maju dan mundur di sepanjang baris karakter tertulis."
+        },
+        {
+          step: "05",
+          title: "Inferensi & Pembuatan Skor",
+          description: "Output head Softmax menghasilkan tingkatan penilaian kategoris yang disertai manifes inferensi JSON untuk verifikasi web."
+        }
+      ]
+    },
+    implementation: {
+      architecture: "Hibrida MobileNetV2 + BiLSTM: MobileNetV2 mengekstrak fitur visual terperinci tanpa beban komputasi yang besar, sementara BiLSTM menangkap kontinuitas guratan/karakter di sepanjang baris tulisan tangan.",
+      codeSnippet: {
+        filename: "inference_pipeline.py",
+        language: "python",
+        code: `import json
+import numpy as np
+import cv2
+import tensorflow as tf
+from tensorflow.keras.models import load_model
+
+def preprocess_essay_image(image_path: str, target_size=(224, 224)) -> np.ndarray:
+    """Preprocess handwritten essay crop: grayscale, normalize, resize."""
+    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    if img is None:
+        raise ValueError(f"Could not load image at {image_path}")
+    
+    # Adaptive thresholding to clean background grain
+    thresh = cv2.adaptiveThreshold(
+        img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
+        cv2.THRESH_BINARY_INV, 11, 2
+    )
+    # Convert to 3-channel for backbone compatibility
+    img_rgb = cv2.cvtColor(thresh, cv2.COLOR_GRAY2RGB)
+    img_resized = cv2.resize(img_rgb, target_size)
+    normalized = img_resized.astype(np.float32) / 255.0
+    return np.expand_dims(normalized, axis=0)
+
+def predict_essay_score(model, image_path: str, manifest_path: str = "model_manifest.json"):
+    """Run model inference and map output using JSON manifest."""
+    with open(manifest_path, 'r') as f:
+        manifest = json.load(f)
+    
+    tensor = preprocess_essay_image(image_path)
+    predictions = model.predict(tensor)
+    predicted_idx = int(np.argmax(predictions[0]))
+    confidence = float(predictions[0][predicted_idx])
+    
+    return {
+        "predicted_label": manifest["classes"][predicted_idx],
+        "confidence": confidence,
+        "model_architecture": manifest["architecture_version"]
+    }`
+      }
+    },
+    results: {
+      summary: "Dievaluasi di berbagai arsitektur neural network dalam. Model MobileNetV2 + BiLSTM mencapai akurasi validasi tertinggi (55,45%) dan skor F1 terbobot yang kuat (0,5191) dengan jumlah parameter yang jauh lebih rendah.",
+      metrics: [
+        { label: "Akurasi Validasi", value: "55.45%", subtext: "MobileNetV2 + BiLSTM" },
+        { label: "Weighted F1-Score", value: "0.5191", subtext: "Keseimbangan presisi/recall" },
+        { label: "Macro F1-Score", value: "0.3156", subtext: "Lintas seluruh tingkatan nilai" },
+        { label: "Sampel Dataset", value: "1,560", subtext: "65 mahasiswa × 4 pertanyaan" }
+      ],
+      comparisons: [
+        {
+          name: "MobileNetV2 + BiLSTM (Model Saya)",
+          valAccuracy: 55.45,
+          macroF1: 0.3156,
+          weightedF1: 0.5191,
+          isMainModel: true
+        },
+        {
+          name: "InceptionV3 + BiLSTM",
+          valAccuracy: 54.17,
+          macroF1: 0.3369,
+          weightedF1: 0.5187,
+          isMainModel: false
+        },
+        {
+          name: "DenseNet121 + BiLSTM",
+          valAccuracy: 52.56,
+          macroF1: 0.2808,
+          weightedF1: 0.4931,
+          isMainModel: false
+        }
+      ],
+      validationNotice: "Catatan: Angka yang dilaporkan merupakan hasil validasi yang dihitung pada pembagian cross-validation. Tidak ada pengujian independen terpisah yang dievaluasi untuk metrik tolok ukur ini.",
+      honestLimitations: [
+        "Kinerja model sensitif terhadap kemiringan tulisan tangan ekstrem, rembesan tinta yang tebal, dan artefak pemindaian.",
+        "Macro F1 (0.3156) menunjukkan ketidakseimbangan kelas (class imbalance) pada tingkatan nilai ekstrem (skor sangat tinggi atau sangat rendah).",
+        "Model ini merupakan prototipe penelitian akademik dan dasar (baseline), bukan mesin penilaian otomatis tingkat komersial.",
+        "Dataset dibatasi pada ujian dari satu mata kuliah universitas yaitu Steganografi."
+      ]
+    },
+    resources: {
+      githubUrl: "https://github.com/maygitvia-dot/scovis-essay-eval",
+      demoNote: "Basis kode proyek akademik dan skrip verifikasi inferensi.",
+      artifacts: [
+        {
+          title: "Diagram Pipeline Model & Inferensi",
+          type: "diagram",
+          description: "Alur data end-to-end dari potongan lembar mahasiswa mentah hingga vektor klasifikasi BiLSTM.",
+          status: "Tersedia di studi kasus"
+        },
+        {
+          title: "Kode Inferensi & Skema Manifes",
+          type: "code",
+          description: "Pemuat inferensi Python, filter preprocessing, dan JSON metadata model.",
+          status: "Tersedia"
+        },
+        {
+          title: "Struktur Dataset & Sampel Preprocessing",
+          type: "data",
+          description: "Sampel potongan tulisan tangan sebelum dan sesudah filtering OpenCV adaptif.",
+          status: "Diilustrasikan"
+        },
+        {
+          title: "Laporan Proyek Akademik (Kelompok 6)",
+          type: "pdf",
+          description: "Dokumentasi akademik formal tentang metodologi dan kurva validasi.",
+          status: "Terdokumentasi"
+        }
+      ]
+    }
+  },
+  {
+    id: "ai-translation",
+    numericId: "02",
+    tagline: "Penerjemahan dokumen dengan n8n & Gemini",
+    title: "Otomasi Translasi AI",
+    subtitle: "Otomatisasi Penerjemahan Dokumen Berbasis AI dengan n8n",
+    fullTitle: "Otomatisasi Penerjemahan Dokumen Berbasis AI dengan n8n, Gemini & Google Workspace",
+    category: "Otomasi Cerdas & Orkestrasi LLM",
+    period: "Proyek Rekayasa Mandiri",
+    role: "Arsitek Otomasi & Perekayasa Alur Kerja",
+    stack: [
+      "n8n Workflow Automation",
+      "Google Gemini AI",
+      "Google Drive API",
+      "Google Docs API",
+      "Prompt Engineering",
+      "Text Extraction",
+      "Node Architecture",
+      "JSON Dataflow"
+    ],
+    summary: "Pipeline otomatis yang dirancang dan diuji secara independen untuk memantau Google Drive terhadap dokumen PDF bahasa Inggris, mengekstrak konten teks, menerapkan terjemahan sadar konteks via Google Gemini AI, dan menghasilkan Google Docs bahasa Indonesia terformat rapi.",
+    problem: {
+      statement: "Menerjemahkan dokumentasi teknis, makalah akademis, dan buku panduan secara manual bersifat repetitif, menjemukan, dan mengganggu produktivitas saat menangani dokumen PDF multi-halaman.",
+      challenges: [
+        "Ekstraksi teks PDF tak terstruktur sering kali menyebabkan pemotongan baris rusak dan paragraf terpecah",
+        "Terjemahan harfiah langsung menghilangkan konteks teknis khusus domain",
+        "Proses copy-paste manual antara cloud storage, alat penerjemah, dan word processor berjalan lambat dan rentan kesalahan",
+        "Sistem otomatis membutuhkan penanganan error saat skema file atau batas token berfluktuasi"
+      ],
+      objectives: [
+        "Mengeliminasi langkah manual dengan membangun alur kerja otomatis end-to-end di n8n",
+        "Memanfaatkan LLM Google Gemini dengan prompt terarah untuk terjemahan bahasa Indonesia teknis yang alami",
+        "Menyimpan Google Docs bahasa Indonesia yang rapi kembali ke Google Drive secara otomatis"
+      ]
+    },
+    myContribution: [
+      "Secara mandiri mengonsep, merancang, dan mengonfigurasi seluruh alur kerja otomatis 7 tahap di n8n.",
+      "Mengintegrasikan Google Drive API untuk deteksi berkas terjadwal, kueri metadata, dan pengunduhan berkas biner.",
+      "Mengonfigurasi node ekstraksi berkas yang tangguh untuk mem-parsing aliran teks mentah dari PDF multi-halaman.",
+      "Merancang dan menyempurnakan prompt sistem Google Gemini untuk mempertahankan terminologi teknis dan tata bahasa Indonesia yang baku.",
+      "Mengintegrasikan node Google Docs untuk membuat, memberi judul, dan mengisi dokumen keluaran secara dinamis.",
+      "Melakukan pengujian end-to-end dengan tiga dokumen PDF uji, menghasilkan tiga Google Docs terjemahan lengkap yang terverifikasi."
+    ],
+    technicalProcess: {
+      overview: "Arsitektur beroperasi secara sekuensial di 7 node khusus, mentransformasikan berkas cloud mentah menjadi dokumen bahasa Indonesia yang rapi tanpa campur tangan manusia.",
+      steps: [
+        {
+          step: "01",
+          title: "Schedule Trigger",
+          description: "Memulai alur kerja pada jadwal cron yang dapat dikonfigurasi untuk memeriksa repositori input Google Drive."
+        },
+        {
+          step: "02",
+          title: "Search Files & Folders",
+          description: "Mengueri Google Drive dengan filter tipe MIME (application/pdf) dan tag status untuk mendeteksi dokumen baru yang belum diterjemahkan."
+        },
+        {
+          step: "03",
+          title: "Download File",
+          description: "Mengambil aliran biner mentah dari PDF yang teridentifikasi ke dalam memori cache alur kerja."
+        },
+        {
+          step: "04",
+          title: "Extract From File",
+          description: "Mengekstrak konten tekstual, membersihkan carriage return, pemisah halaman, dan ketidakkonsistenan format."
+        },
+        {
+          step: "05",
+          title: "AI Agent (Google Gemini)",
+          description: "Meneruskan teks yang diekstrak melalui model Gemini dengan prompt rekayasa khusus untuk preservasi konteks teknis."
+        },
+        {
+          step: "06",
+          title: "Create Document",
+          description: "Memanggil Google Docs API untuk membuat dokumen baru dengan timestamp otomatis dan prefix judul terformat."
+        },
+        {
+          step: "07",
+          title: "Update Document",
+          description: "Mengisi isi dokumen dengan terjemahan hasil generasi Gemini dan memindahkan berkas asli ke arsip."
+        }
+      ]
+    },
+    implementation: {
+      architecture: "DAG (Directed Acyclic Graph) berbasis event terjadwal di n8n memanfaatkan integrasi OAuth2 dengan Google Cloud API dan endpoint Gemini 1.5/Flash.",
+      workflowNodes: [
+        {
+          node: "Schedule Trigger",
+          purpose: "Mekanisme polling berbasis waktu",
+          configuration: "Pemeriksaan interval terjadwal pada folder root Google Drive."
+        },
+        {
+          node: "Search Files & Folders",
+          purpose: "Pengambilan dokumen target",
+          configuration: "Kueri: folder input dan mimeType='application/pdf' serta bukan sampah."
+        },
+        {
+          node: "Download File",
+          purpose: "Pemuatan aliran data",
+          configuration: "Mengambil aliran biner berdasarkan fileId Drive ke dalam properti $binary.data."
+        },
+        {
+          node: "Extract From File",
+          purpose: "Parser teks PDF",
+          configuration: "Mengekstrak muatan teks mentah dari objek biner dan mengeluarkan string teks bersih."
+        },
+        {
+          node: "AI Agent with Google Gemini",
+          purpose: "Mesin penerjemah kontekstual",
+          configuration: "Model: gemini-1.5-flash. Prompt sistem memberlakukan terminologi teknis Indonesia yang baku."
+        },
+        {
+          node: "Create Document",
+          purpose: "Pembuatan file tujuan",
+          configuration: "Membuat file berjudul '[ID-TRANSLATION] ' + nama file asli di folder target Drive."
+        },
+        {
+          node: "Update Document",
+          purpose: "Penyisipan muatan teks",
+          configuration: "Menambahkan aliran teks/markdown hasil terjemahan ke dalam ID Google Doc yang telah dibuat."
+        }
+      ],
+      codeSnippet: {
+        filename: "gemini_prompt_template.txt",
+        language: "markdown",
+        code: `You are an expert technical translator specializing in engineering and computer science.
+Your task is to translate the following English document into professional, fluent Indonesian.
+
+Guidelines:
+1. Maintain consistent technical terminology (e.g., 'deep learning', 'feature extraction', 'neural network').
+2. Preserve original structural hierarchy, section headers, and bulleted lists.
+3. Ensure natural grammatical flow in Indonesian (Bahasa Indonesia baku) without awkward literal phrasing.
+4. Output ONLY the translated document content without meta-commentary or conversational filler.
+
+Source Text:
+{{ $json.extractedText }}`
+      }
+    },
+    results: {
+      summary: "Alur kerja diuji secara ketat dengan tiga dokumen teknis PDF berbeda. Ketiganya berhasil dimuat, diekstrak, diterjemahkan oleh Gemini, dan diformat menjadi tiga Google Docs bahasa Indonesia lengkap.",
+      metrics: [
+        { label: "Tingkat Keberhasilan Pipeline", value: "100%", subtext: "3 dari 3 PDF uji berhasil diproses" },
+        { label: "Node Alur Kerja", value: "7 Node", subtext: "DAG terhubung penuh" },
+        { label: "Keluaran Dihasilkan", value: "3 Dokumen", subtext: "Google Docs di Google Drive" },
+        { label: "Intervensi Manusia", value: "0 Langkah", subtext: "Eksekusi sepenuhnya mandiri" }
+      ],
+      validationNotice: "Diverifikasi pada kumpulan uji terkontrol dari 3 dokumen sampel. Penerapan produksi untuk PDF arbitrer yang sangat panjang memerlukan logika pemotongan token (chunking).",
+      honestLimitations: [
+        "Dokumen yang sangat besar (100+ halaman) memerlukan pemotongan teks untuk menghindari batasan token panggilan tunggal LLM.",
+        "Bagan raster yang tersemat dan notasi rumus matematika dalam PDF kompleks memerlukan pasca-pemrosesan OCR / LaTeX.",
+        "Memerlukan kredensial OAuth2 Google Cloud yang aktif dan instance runner n8n yang berjalan."
+      ]
+    },
+    resources: {
+      githubUrl: "https://github.com/maygitvia-dot/n8n-gemini-document-translator",
+      demoNote: "Blueprint alur kerja format JSON dan dokumentasi konfigurasi.",
+      artifacts: [
+        {
+          title: "Blueprint Arsitektur Alur Kerja n8n Lengkap",
+          type: "diagram",
+          description: "Pemetaan node visual dari seluruh 7 langkah eksekusi dari Schedule hingga Google Docs.",
+          status: "Divisualisasikan"
+        },
+        {
+          title: "Ekspor JSON Alur Kerja n8n Tersanitasi",
+          type: "code",
+          description: "Pipeline JSON yang dapat diimpor dengan slot kredensial placeholder untuk dibagikan ke publik.",
+          status: "Tersedia"
+        },
+        {
+          title: "Prompt Gemini & Skema Terjemahan",
+          type: "code",
+          description: "Instruksi sistem, aturan konteks, dan arahan format untuk node LLM.",
+          status: "Terdokumentasi"
+        },
+        {
+          title: "3 Riwayat Eksekusi Uji & Rekaman Dokumen",
+          type: "doc",
+          description: "Bukti terdokumentasi dari 3 eksekusi sukses dari PDF bahasa Inggris ke Google Doc bahasa Indonesia.",
+          status: "Terverifikasi"
+        }
+      ]
+    }
+  }
+];
+
+export const getProjectsData = (lang: 'en' | 'id' = 'en'): ProjectData[] =>
+  lang === 'id' ? PROJECTS_DATA_ID : PROJECTS_DATA;
+
+export const getProjectById = (id: string, lang: 'en' | 'id' = 'en'): ProjectData | undefined => {
+  const data = getProjectsData(lang);
+  return data.find((p) => p.id === id);
+};
+
 export const EXPERIENCE_DATA: ExperienceItem[] = [
   {
     id: "kai-internship",

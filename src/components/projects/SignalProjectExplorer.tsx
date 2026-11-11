@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { PROJECTS_DATA } from '../../data/portfolioData';
+import { getProjectsData } from '../../data/portfolioData';
 import { ProjectData } from '../../types/portfolio';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
@@ -12,7 +12,8 @@ interface SignalProjectExplorerProps {
 export const SignalProjectExplorer: React.FC<SignalProjectExplorerProps> = ({
   onSelectCaseStudy,
 }) => {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
+  const projects = getProjectsData(lang);
 
   return (
     <section id="projects" className="relative py-24 sm:py-32 border-b border-steel-midnight/40 overflow-hidden">
@@ -41,7 +42,7 @@ export const SignalProjectExplorer: React.FC<SignalProjectExplorerProps> = ({
 
         {/* 2-Column Cards Grid matching Reference Template */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-          {PROJECTS_DATA.map((project, idx) => {
+          {projects.map((project, idx) => {
             const isScovis = project.id === 'scovis';
 
             return (
@@ -72,7 +73,7 @@ export const SignalProjectExplorer: React.FC<SignalProjectExplorerProps> = ({
                         {/* Top corner label */}
                         <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-obsidian/85 backdrop-blur-md border border-steel-midnight text-[10px] font-mono text-silver-ice shadow-lg flex items-center gap-1.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-electric-blue animate-pulse" />
-                          <span>Image-Based Assessment</span>
+                          <span>{lang === 'id' ? 'Penilaian Berbasis Citra' : 'Image-Based Assessment'}</span>
                         </div>
 
                         {/* Bottom Metric Tag */}
@@ -94,12 +95,12 @@ export const SignalProjectExplorer: React.FC<SignalProjectExplorerProps> = ({
                         {/* Top corner label */}
                         <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-obsidian/85 backdrop-blur-md border border-steel-midnight text-[10px] font-mono text-silver-ice shadow-lg flex items-center gap-1.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-laser-violet animate-pulse" />
-                          <span>Workflow Automation</span>
+                          <span>{lang === 'id' ? 'Otomatisasi Alur Kerja' : 'Workflow Automation'}</span>
                         </div>
 
                         {/* Bottom Metric Tag */}
                         <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-obsidian/90 backdrop-blur-md border border-laser-violet/40 text-[10px] font-mono text-arctic-cyan shadow-lg">
-                          100% AUTONOMOUS
+                          {lang === 'id' ? '100% OTOMATIS' : '100% AUTONOMOUS'}
                         </div>
                       </div>
                     )}
@@ -112,7 +113,9 @@ export const SignalProjectExplorer: React.FC<SignalProjectExplorerProps> = ({
                   <div className="flex flex-wrap items-center gap-2 mb-4">
                     {/* Primary Badge */}
                     <span className="px-3 py-1 rounded-lg bg-laser-violet/15 text-icy-lilac border border-laser-violet/30 text-xs font-mono font-medium">
-                      {isScovis ? 'AI Assessment' : 'AI Automation'}
+                      {isScovis
+                        ? (lang === 'id' ? 'Penilaian AI' : 'AI Assessment')
+                        : (lang === 'id' ? 'Otomasi AI' : 'AI Automation')}
                     </span>
 
                     {/* Secondary Stack Badges */}

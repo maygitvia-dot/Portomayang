@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ProjectData } from '../../types/portfolio';
 import { CodeViewer } from '../ui/CodeViewer';
+import { useLanguage } from '../../context/LanguageContext';
 import {
   CheckCircle2,
   Sliders,
@@ -18,6 +19,8 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
 }) => {
   const [activeNodeIndex, setActiveNodeIndex] = useState<number>(4); // Default to AI Agent node
   const [activeImageModal, setActiveImageModal] = useState<string | null>(null);
+  const { lang } = useLanguage();
+  const isId = lang === 'id';
 
   const nodes = project.implementation.workflowNodes || [];
   const selectedNode = nodes[activeNodeIndex] || nodes[0];
@@ -25,25 +28,25 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
   const workflowGallery = [
     {
       step: '01',
-      title: 'Workflow Architecture',
-      subtitle: 'Complete n8n DAG Pipeline',
+      title: isId ? 'Arsitektur Workflow' : 'Workflow Architecture',
+      subtitle: isId ? 'Pipeline DAG n8n Lengkap' : 'Complete n8n DAG Pipeline',
       image: '/projects/translation/translation-workflow.jpg',
     },
     {
       step: '02',
-      title: 'Input Documents',
+      title: isId ? 'Dokumen Masuk' : 'Input Documents',
       subtitle: 'Google Drive: Dokumen_Masuk',
       image: '/projects/translation/translation-input-docs.jpg',
     },
     {
       step: '03',
-      title: 'AI Translation Execution',
-      subtitle: 'Gemini AI Telemetry & Logs',
+      title: isId ? 'Eksekusi Translasi AI' : 'AI Translation Execution',
+      subtitle: isId ? 'Telemetri & Log Gemini AI' : 'Gemini AI Telemetry & Logs',
       image: '/projects/translation/translation-execution.jpg',
     },
     {
       step: '04',
-      title: 'Automated Output',
+      title: isId ? 'Hasil Otomatisasi' : 'Automated Output',
       subtitle: 'Google Docs: Dokumen_Hasil',
       image: '/projects/translation/translation-output-docs.jpg',
     },
@@ -56,14 +59,14 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-steel-midnight/50 pb-3">
           <div>
             <span className="text-[10px] font-mono uppercase tracking-widest text-laser-violet">
-              System Pipeline Visuals
+              {isId ? 'Visualisasi Pipeline Sistem' : 'System Pipeline Visuals'}
             </span>
             <h4 className="text-sm sm:text-base font-serif text-frost font-medium">
-              4-Stage End-to-End Workflow Showcase
+              {isId ? 'Showcase Alur Kerja End-to-End 4 Tahap' : '4-Stage End-to-End Workflow Showcase'}
             </h4>
           </div>
           <span className="text-[11px] font-mono text-silver-muted">
-            Click any frame to inspect full-resolution
+            {isId ? 'Klik frame mana saja untuk melihat resolusi penuh' : 'Click any frame to inspect full-resolution'}
           </span>
         </div>
 
@@ -105,10 +108,12 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
         <div className="flex items-center gap-2 font-mono text-xs text-electric-blue uppercase tracking-widest">
           <span>01</span>
           <span className="w-4 h-[1px] bg-electric-blue" />
-          <span>The Problem & Input Documents</span>
+          <span>{isId ? 'Masalah & Dokumen Input' : 'The Problem & Input Documents'}</span>
         </div>
         <h3 className="text-2xl sm:text-3xl font-serif text-frost font-light">
-          Manual technical translation between cloud repositories is repetitive, disjointed, and time-intensive.
+          {isId
+            ? 'Penerjemahan teknis manual antar repositori cloud bersifat repetitif, terfragmentasi, dan menyita waktu.'
+            : 'Manual technical translation between cloud repositories is repetitive, disjointed, and time-intensive.'}
         </h3>
         <p className="text-silver-ice text-sm sm:text-base leading-relaxed font-sans font-light">
           {project.problem.statement}
@@ -117,7 +122,7 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
         {/* Key Challenges Badges */}
         <div className="pt-2">
           <div className="text-xs font-mono text-silver-muted uppercase tracking-wider mb-3">
-            Core Bottlenecks Addressed
+            {isId ? 'Kendala Utama yang Diselesaikan' : 'Core Bottlenecks Addressed'}
           </div>
           <div className="flex flex-wrap gap-2.5">
             {project.problem.challenges.map((challenge, idx) => (
@@ -136,7 +141,7 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
           <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
             <span className="text-electric-blue uppercase tracking-wider flex items-center gap-1.5 font-semibold">
               <ImageIcon className="w-4 h-4" />
-              2. Input Documents (Google Drive: Dokumen_Masuk)
+              {isId ? '2. Dokumen Masuk (Google Drive: Dokumen_Masuk)' : '2. Input Documents (Google Drive: Dokumen_Masuk)'}
             </span>
             <span className="text-[11px] text-silver-muted hidden sm:inline">Figure 2.0</span>
           </div>
@@ -152,11 +157,14 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
             />
             <div className="absolute inset-0 bg-obsidian/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-xs font-mono text-white">
               <ZoomIn className="w-4 h-4 text-electric-blue" />
-              <span>Click to view high-resolution</span>
+              <span>{isId ? 'Klik untuk melihat resolusi penuh' : 'Click to view high-resolution'}</span>
             </div>
           </div>
           <p className="text-[11px] font-sans text-silver-muted leading-relaxed">
-            Target PDF documents monitored in Google Drive directory: <code className="text-frost">The Charming Crystal Ball.pdf</code>, <code className="text-frost">The Colour of Love.pdf</code>, and <code className="text-frost">Ten Hours.pdf</code>.
+            {isId
+              ? 'Dokumen PDF target yang dimonitor di direktori Google Drive: '
+              : 'Target PDF documents monitored in Google Drive directory: '}
+            <code className="text-frost">The Charming Crystal Ball.pdf</code>, <code className="text-frost">The Colour of Love.pdf</code>, {isId ? 'dan' : 'and'} <code className="text-frost">Ten Hours.pdf</code>.
           </p>
         </div>
       </section>
@@ -166,15 +174,19 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
         <div className="flex items-center gap-2 font-mono text-xs text-laser-violet uppercase tracking-widest">
           <span>02</span>
           <span className="w-4 h-[1px] bg-laser-violet" />
-          <span>My Documented Contribution</span>
+          <span>{isId ? 'Kontribusi Terdokumentasi Saya' : 'My Documented Contribution'}</span>
         </div>
         <h3 className="text-2xl sm:text-3xl font-serif text-frost font-light">
-          Independent Workflow Engineering & Integration
+          {isId ? 'Rekayasa & Integrasi Alur Kerja Mandiri' : 'Independent Workflow Engineering & Integration'}
         </h3>
 
         <div className="p-4 rounded-lg border border-steel-midnight bg-obsidian-dark text-xs text-silver-muted leading-relaxed">
-          <span className="text-icy-lilac font-mono uppercase block mb-1">Architecture Ownership:</span>
-          This project was independently conceived, designed, built, and tested. I configured the n8n environment, integrated Google Cloud APIs, structured the system prompts for Google Gemini, and verified the output translation quality across test documents.
+          <span className="text-icy-lilac font-mono uppercase block mb-1">
+            {isId ? 'Kepemilikan Arsitektur:' : 'Architecture Ownership:'}
+          </span>
+          {isId
+            ? 'Proyek ini digagas, dirancang, dibangun, dan diuji secara independen oleh saya sendiri. Saya mengonfigurasi lingkungan n8n, mengintegrasikan Google Cloud API, menyusun system prompt untuk Google Gemini, dan memverifikasi kualitas terjemahan akhir di seluruh dokumen pengujian.'
+            : 'This project was independently conceived, designed, built, and tested. I configured the n8n environment, integrated Google Cloud APIs, structured the system prompts for Google Gemini, and verified the output translation quality across test documents.'}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
@@ -197,13 +209,15 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
         <div className="flex items-center gap-2 font-mono text-xs text-arctic-cyan uppercase tracking-widest">
           <span>03</span>
           <span className="w-4 h-[1px] bg-arctic-cyan" />
-          <span>Workflow Architecture & Node Graph</span>
+          <span>{isId ? 'Arsitektur Workflow & Graf Node' : 'Workflow Architecture & Node Graph'}</span>
         </div>
         <h3 className="text-2xl sm:text-3xl font-serif text-frost font-light">
-          7-Stage Event-Driven Pipeline
+          {isId ? 'Pipeline Berbasis Event 7-Tahap' : '7-Stage Event-Driven Pipeline'}
         </h3>
         <p className="text-silver-ice text-sm sm:text-base leading-relaxed font-sans font-light">
-          The pipeline operates sequentially as a Directed Acyclic Graph (DAG) in n8n, handling scheduled trigger queries, binary downloads, text parsing, context-preserving translation, and destination doc formatting.
+          {isId
+            ? 'Pipeline beroperasi secara sekuensial sebagai Directed Acyclic Graph (DAG) di n8n, menangani kueri pemicu terjadwal, pengunduhan biner, ekstraksi teks, translasi penjaga konteks, dan pemformatan dokumen tujuan.'
+            : 'The pipeline operates sequentially as a Directed Acyclic Graph (DAG) in n8n, handling scheduled trigger queries, binary downloads, text parsing, context-preserving translation, and destination doc formatting.'}
         </p>
 
         {/* 📷 Real Screenshot 2: Full n8n Workflow Canvas */}
@@ -211,7 +225,7 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
           <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
             <span className="text-laser-violet uppercase tracking-wider flex items-center gap-1.5 font-semibold">
               <ImageIcon className="w-4 h-4" />
-              1. AI Document Translation Automation Workflow
+              {isId ? '1. Alur Kerja Otomasi Translasi Dokumen AI' : '1. AI Document Translation Automation Workflow'}
             </span>
             <span className="text-[11px] text-silver-muted hidden sm:inline">Figure 1.0</span>
           </div>
@@ -227,19 +241,23 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
             />
             <div className="absolute inset-0 bg-obsidian/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-xs font-mono text-white">
               <ZoomIn className="w-4 h-4 text-laser-violet" />
-              <span>Click to view high-resolution</span>
+              <span>{isId ? 'Klik untuk melihat resolusi penuh' : 'Click to view high-resolution'}</span>
             </div>
           </div>
           <p className="text-[11px] font-sans text-silver-muted leading-relaxed">
-            The full 7-node orchestration: Schedule Trigger → Search files and folders → Download file → Extract from File (PDF) → AI Agent (Google Gemini Chat Model) → Create a document1 → Update a document.
+            {isId
+              ? 'Orkestrasi 7 node lengkap: Schedule Trigger → Search files and folders → Download file → Extract from File (PDF) → AI Agent (Google Gemini Chat Model) → Create a document1 → Update a document.'
+              : 'The full 7-node orchestration: Schedule Trigger → Search files and folders → Download file → Extract from File (PDF) → AI Agent (Google Gemini Chat Model) → Create a document1 → Update a document.'}
           </p>
         </div>
 
         {/* Interactive n8n Node Map */}
         <div className="p-6 rounded-xl border border-steel-midnight bg-obsidian-dark space-y-6 mt-6">
           <div className="flex items-center justify-between text-xs font-mono text-silver-muted uppercase tracking-wider">
-            <span>Interactive Workflow Node Inspector</span>
-            <span className="text-electric-blue">Click any node to inspect configuration</span>
+            <span>{isId ? 'Inspektur Node Alur Kerja Interaktif' : 'Interactive Workflow Node Inspector'}</span>
+            <span className="text-electric-blue">
+              {isId ? 'Klik node mana saja untuk memeriksa konfigurasinya' : 'Click any node to inspect configuration'}
+            </span>
           </div>
 
           {/* Horizontal / Step-by-Step Node Chain */}
@@ -268,7 +286,7 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
                     {n.node}
                   </div>
                   <div className="text-[10px] font-mono text-silver-muted truncate">
-                    {idx === 4 ? 'Gemini AI' : 'Pipeline'}
+                    {idx === 4 ? 'Gemini AI' : (isId ? 'Pipeline' : 'Pipeline')}
                   </div>
                 </button>
               );
@@ -291,7 +309,7 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
               </div>
               <div className="pt-2 text-silver-ice font-sans">
                 <span className="text-silver-muted font-mono block text-xs mb-1">
-                  Active Node Configuration & Dataflow:
+                  {isId ? 'Konfigurasi & Alur Data Node Aktif:' : 'Active Node Configuration & Dataflow:'}
                 </span>
                 <p className="font-mono text-xs text-icy-lilac bg-obsidian-dark p-3 rounded border border-steel-midnight">
                   {selectedNode.configuration}
@@ -305,7 +323,7 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
         {project.implementation.codeSnippet && (
           <div className="space-y-2 pt-4">
             <div className="text-xs font-mono text-silver-muted uppercase tracking-wider">
-              Gemini System Instruction & Translation Rules
+              {isId ? 'Instruksi Sistem Gemini & Aturan Terjemahan' : 'Gemini System Instruction & Translation Rules'}
             </div>
             <CodeViewer
               code={project.implementation.codeSnippet.code}
@@ -321,10 +339,12 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
         <div className="flex items-center gap-2 font-mono text-xs text-electric-blue uppercase tracking-widest">
           <span>04</span>
           <span className="w-4 h-[1px] bg-electric-blue" />
-          <span>Results & Execution Verification</span>
+          <span>{isId ? 'Hasil & Verifikasi Eksekusi' : 'Results & Execution Verification'}</span>
         </div>
         <h3 className="text-2xl sm:text-3xl font-serif text-frost font-light">
-          Automated Ingestion to Formatted Indonesian Output
+          {isId
+            ? 'Ingesti Otomatis Menuju Output Bahasa Indonesia yang Rapi'
+            : 'Automated Ingestion to Formatted Indonesian Output'}
         </h3>
 
         {/* 📷 Real Screenshot 3: AI Translation Execution Log & Output */}
@@ -332,7 +352,9 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
           <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
             <span className="text-arctic-cyan uppercase tracking-wider flex items-center gap-1.5 font-semibold">
               <ImageIcon className="w-4 h-4" />
-              3. AI Translation Execution (Live Telemetry & Logs)
+              {isId
+                ? '3. Eksekusi Translasi AI (Telemetri & Log Langsung)'
+                : '3. AI Translation Execution (Live Telemetry & Logs)'}
             </span>
             <span className="text-[11px] text-silver-muted hidden sm:inline">Figure 3.0</span>
           </div>
@@ -348,11 +370,13 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
             />
             <div className="absolute inset-0 bg-obsidian/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-xs font-mono text-white">
               <ZoomIn className="w-4 h-4 text-arctic-cyan" />
-              <span>Click to view high-resolution</span>
+              <span>{isId ? 'Klik untuk melihat resolusi penuh' : 'Click to view high-resolution'}</span>
             </div>
           </div>
           <p className="text-[11px] font-sans text-silver-muted leading-relaxed">
-            Execution logs verify end-to-end completion in 30.601s (AI Agent node: 18.04s, 4,966 tokens consumed) with natural, professional Indonesian output stream.
+            {isId
+              ? 'Log eksekusi memverifikasi penyelesaian end-to-end dalam 30,601 detik (node AI Agent: 18,04 detik, 4.966 token terpakai) dengan aliran output bahasa Indonesia yang alami dan profesional.'
+              : 'Execution logs verify end-to-end completion in 30.601s (AI Agent node: 18.04s, 4,966 tokens consumed) with natural, professional Indonesian output stream.'}
           </p>
         </div>
 
@@ -361,7 +385,9 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
           <div className="flex items-center justify-between text-xs font-mono text-silver-muted">
             <span className="text-electric-blue uppercase tracking-wider flex items-center gap-1.5 font-semibold">
               <ImageIcon className="w-4 h-4" />
-              4. Automated Translation Output (Google Drive: Dokumen_Hasil_Terjemahan)
+              {isId
+                ? '4. Hasil Terjemahan Otomatis (Google Drive: Dokumen_Hasil_Terjemahan)'
+                : '4. Automated Translation Output (Google Drive: Dokumen_Hasil_Terjemahan)'}
             </span>
             <span className="text-[11px] text-silver-muted hidden sm:inline">Figure 4.0</span>
           </div>
@@ -377,11 +403,14 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
             />
             <div className="absolute inset-0 bg-obsidian/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-xs font-mono text-white">
               <ZoomIn className="w-4 h-4 text-electric-blue" />
-              <span>Click to view high-resolution</span>
+              <span>{isId ? 'Klik untuk melihat resolusi penuh' : 'Click to view high-resolution'}</span>
             </div>
           </div>
           <p className="text-[11px] font-sans text-silver-muted leading-relaxed">
-            Target destination directory verified with 3 newly created Google Docs: <code className="text-frost">Terjemahan_Ten Hours</code>, <code className="text-frost">Terjemahan_The Colour of Love</code>, and <code className="text-frost">Terjemahan_The Charming Crystal Ball</code>.
+            {isId
+              ? 'Direktori target tujuan terverifikasi dengan 3 Google Docs yang baru terbuat: '
+              : 'Target destination directory verified with 3 newly created Google Docs: '}
+            <code className="text-frost">Terjemahan_Ten Hours</code>, <code className="text-frost">Terjemahan_The Colour of Love</code>, {isId ? 'dan' : 'and'} <code className="text-frost">Terjemahan_The Charming Crystal Ball</code>.
           </p>
         </div>
 
@@ -389,7 +418,7 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
         <div className="p-5 rounded-xl border border-steel-midnight bg-navy-surface/30 space-y-3 mt-6">
           <div className="text-xs font-mono text-icy-lilac uppercase tracking-wider flex items-center gap-2">
             <Sliders className="w-3.5 h-3.5" />
-            <span>Operational Constraints & Lessons Learned</span>
+            <span>{isId ? 'Batasan Operasional & Pembelajaran' : 'Operational Constraints & Lessons Learned'}</span>
           </div>
           <ul className="space-y-2 text-xs sm:text-sm text-silver-muted font-sans list-disc list-inside">
             {project.results.honestLimitations.map((lim, idx) => (
@@ -406,10 +435,10 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
         <div className="flex items-center gap-2 font-mono text-xs text-arctic-cyan uppercase tracking-widest">
           <span>05</span>
           <span className="w-4 h-[1px] bg-arctic-cyan" />
-          <span>Documentation & Blueprint Artifacts</span>
+          <span>{isId ? 'Dokumentasi & Artefak Cetak Biru' : 'Documentation & Blueprint Artifacts'}</span>
         </div>
         <h3 className="text-2xl sm:text-3xl font-serif text-frost font-light">
-          Workflow Export & Configuration Records
+          {isId ? 'Ekspor Workflow & Catatan Konfigurasi' : 'Workflow Export & Configuration Records'}
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -445,7 +474,7 @@ export const TranslationCaseStudy: React.FC<TranslationCaseStudyProps> = ({
               className="w-full h-full object-contain max-h-[85vh] rounded-xl"
             />
             <div className="absolute top-4 right-4 bg-obsidian/80 px-3 py-1 rounded-full text-xs font-mono text-silver-ice border border-steel-midnight">
-              Click anywhere to close
+              {isId ? 'Klik di mana saja untuk menutup' : 'Click anywhere to close'}
             </div>
           </div>
         </div>

@@ -248,3 +248,4 @@ Untuk menunjukkan kesiapan industri (*industry-readiness*):
 ---
 
 *Panduan ini disusun untuk menjadi pegangan utama Mayang dalam mempersiapkan portofolio, presentasi proyek, dan wawancara teknis.*
+

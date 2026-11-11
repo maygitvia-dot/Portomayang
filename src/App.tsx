@@ -9,12 +9,17 @@ import { ExperienceEducationSection } from './components/experience/ExperienceEd
 import { ContactSection } from './components/contact/ContactSection';
 import { SiteFooter } from './components/layout/SiteFooter';
 import { ScrollSignalProgress } from './components/ui/ScrollSignalProgress';
-import { ProjectData } from './types/portfolio';
-import { PROJECTS_DATA } from './data/portfolioData';
+import { getProjectById } from './data/portfolioData';
+import { useLanguage } from './context/LanguageContext';
 
 export const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>('hero');
-  const [selectedCaseStudy, setSelectedCaseStudy] = useState<ProjectData | null>(null);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const { lang } = useLanguage();
+
+  const activeProject = selectedProjectId
+    ? (getProjectById(selectedProjectId, lang) || null)
+    : null;
 
   // Monitor scroll for active section indicator
   useEffect(() => {
@@ -44,11 +49,9 @@ export const App: React.FC = () => {
     const checkHash = () => {
       const hash = window.location.hash.replace('#', '');
       if (hash === 'scovis') {
-        const p = PROJECTS_DATA.find((x) => x.id === 'scovis');
-        if (p) setSelectedCaseStudy(p);
+        setSelectedProjectId('scovis');
       } else if (hash === 'ai-translation' || hash === 'ai-automation') {
-        const p = PROJECTS_DATA.find((x) => x.id === 'ai-translation');
-        if (p) setSelectedCaseStudy(p);
+        setSelectedProjectId('ai-translation');
       }
     };
     checkHash();
@@ -69,7 +72,7 @@ export const App: React.FC = () => {
         <HeroSection />
         <AboutSection />
         <SignalProjectExplorer
-          onSelectCaseStudy={(project) => setSelectedCaseStudy(project)}
+          onSelectCaseStudy={(project) => setSelectedProjectId(project.id)}
         />
         <RadialSkillsSection />
         <ExperienceEducationSection />
@@ -80,11 +83,20 @@ export const App: React.FC = () => {
       <SiteFooter />
 
       {/* Full Immersive Technical Case Study Modal */}
-      {selectedCaseStudy && (
+      {activeProject && (
         <ProjectCaseStudyModal
-          project={selectedCaseStudy}
-          onClose={() => setSelectedCaseStudy(null)}
-          onSwitchProject={(p) => setSelectedCaseStudy(p)}
+          project={activeProject}
+          onClose={() => {
+            setSelectedProjectId(null);
+            if (window.location.hash) {
+              try {
+                history.replaceState(null, '', ' ');
+              } catch {
+                // ignore
+              }
+            }
+          }}
+          onSwitchProject={(p) => setSelectedProjectId(p.id)}
         />
       )}
     </div>

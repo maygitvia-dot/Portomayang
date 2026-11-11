@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ProjectData } from '../../types/portfolio';
-import { PROJECTS_DATA } from '../../data/portfolioData';
+import { getProjectsData } from '../../data/portfolioData';
 import { ScovisCaseStudy } from './ScovisCaseStudy';
 import { TranslationCaseStudy } from './TranslationCaseStudy';
 import { ArrowLeft, X, ChevronRight } from 'lucide-react';
@@ -17,8 +17,9 @@ export const ProjectCaseStudyModal: React.FC<ProjectCaseStudyModalProps> = ({
   onClose,
   onSwitchProject,
 }) => {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
   const [activeSubSection, setActiveSubSection] = useState<string>('problem');
+  const allProjects = getProjectsData(lang);
 
   // Handle ESC key to close
   useEffect(() => {
@@ -78,7 +79,7 @@ export const ProjectCaseStudyModal: React.FC<ProjectCaseStudyModalProps> = ({
 
         {/* Project Switcher */}
         <div className="flex items-center gap-2">
-          {PROJECTS_DATA.map((p) => {
+          {allProjects.map((p) => {
             const isCurrent = p.id === project.id;
             return (
               <button
