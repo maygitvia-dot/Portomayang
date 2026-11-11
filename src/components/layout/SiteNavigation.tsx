@@ -9,7 +9,7 @@ interface SiteNavigationProps {
 export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 'hero' }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { lang, toggleLang, t } = useLanguage();
+  const { lang, toggleLang, setLang, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,8 +81,8 @@ export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 
         </a>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6 xl:gap-8">
-          <div className="flex items-center gap-5 xl:gap-7 text-xs font-mono tracking-widest_editorial text-silver-ice">
+        <nav className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-7">
+          <div className="flex items-center gap-4 lg:gap-6 text-xs font-mono tracking-widest_editorial text-silver-ice">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
@@ -106,18 +106,8 @@ export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 
             })}
           </div>
 
-          {/* Language Toggle Button */}
-          <button
-            onClick={toggleLang}
-            aria-label="Toggle language"
-            className="flex items-center gap-1.5 text-[10px] font-mono px-2.5 py-1.5 rounded-full border border-steel-midnight bg-navy-deep/60 text-silver-ice hover:text-frost hover:border-laser-violet/50 transition-all"
-          >
-            <Globe className="w-3 h-3 text-laser-violet" />
-            <span className="font-semibold">{lang === 'en' ? 'ID' : 'EN'}</span>
-          </button>
-
           {/* Open to Work status pill */}
-          <div className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-[10px] font-mono text-emerald-400 whitespace-nowrap">
+          <div className="hidden xl:flex items-center gap-1.5 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-[10px] font-mono text-emerald-400 whitespace-nowrap">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             {t('nav.openToWork')}
           </div>
@@ -143,18 +133,65 @@ export const SiteNavigation: React.FC<SiteNavigationProps> = ({ activeSection = 
           >
             <span>{t('nav.connect')}</span>
           </a>
+
+          {/* Prominent Bilingual Switch Pill [ EN | ID ] */}
+          <div className="flex items-center p-1 rounded-full border border-steel-midnight bg-navy-deep/90 shadow-card-subtle">
+            <button
+              onClick={() => toggleLang()}
+              className="flex items-center gap-1 px-1.5 text-silver-muted hover:text-frost"
+              title="Switch Language"
+            >
+              <Globe className="w-3 h-3 text-laser-violet" />
+            </button>
+            <div className="flex items-center gap-0.5">
+              <button
+                onClick={() => setLang('en')}
+                className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-semibold transition-all duration-200 ${
+                  lang === 'en'
+                    ? 'bg-electric-blue text-white shadow-signal-glow'
+                    : 'text-silver-muted hover:text-frost'
+                }`}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => setLang('id')}
+                className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-semibold transition-all duration-200 ${
+                  lang === 'id'
+                    ? 'bg-laser-violet text-white shadow-laser-glow'
+                    : 'text-silver-muted hover:text-frost'
+                }`}
+              >
+                ID
+              </button>
+            </div>
+          </div>
         </nav>
 
-        {/* Mobile: Language toggle + Hamburger */}
-        <div className="md:hidden flex items-center gap-2">
-          <button
-            onClick={toggleLang}
-            aria-label="Toggle language"
-            className="flex items-center gap-1 text-[10px] font-mono px-2 py-1.5 rounded border border-steel-midnight bg-navy-deep/80 text-silver-ice hover:text-frost"
-          >
-            <Globe className="w-3 h-3 text-laser-violet" />
-            <span className="font-semibold">{lang === 'en' ? 'ID' : 'EN'}</span>
-          </button>
+        {/* Mobile: Prominent Language toggle [ EN | ID ] + Hamburger */}
+        <div className="md:hidden flex items-center gap-2.5">
+          <div className="flex items-center p-0.5 rounded-full border border-steel-midnight bg-navy-deep/90">
+            <button
+              onClick={() => setLang('en')}
+              className={`px-2 py-1 rounded-full text-[10px] font-mono font-semibold transition-all ${
+                lang === 'en'
+                  ? 'bg-electric-blue text-white'
+                  : 'text-silver-muted'
+              }`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLang('id')}
+              className={`px-2 py-1 rounded-full text-[10px] font-mono font-semibold transition-all ${
+                lang === 'id'
+                  ? 'bg-laser-violet text-white'
+                  : 'text-silver-muted'
+              }`}
+            >
+              ID
+            </button>
+          </div>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
